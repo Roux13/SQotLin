@@ -1,5 +1,5 @@
 package ru.nehodov.sqotlin
 
-interface DbConst {
+interface Aliasable {
     val alias: String
 }

@@ -2,8 +2,7 @@ package ru.nehodov.sqotlin.select
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import ru.nehodov.sqotlin.core.select.SELECT
-import ru.nehodov.sqotlin.core.EQ
+import ru.nehodov.sqotlin.EQ
 
 class SELECT_Test {
     val table_name = "table_name"

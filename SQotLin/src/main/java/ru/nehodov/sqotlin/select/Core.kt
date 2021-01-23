@@ -1,6 +1,6 @@
-package ru.nehodov.sqotlin.core.select
+package ru.nehodov.sqotlin.select
 
-import ru.nehodov.sqotlin.DbConst
+import ru.nehodov.sqotlin.Aliasable
 
 
 open class SELECT(
@@ -132,7 +132,7 @@ class COALESCE(
     }
 }
 
-infix fun IFNULL.AS(table: DbConst): String {
+infix fun IFNULL.AS(table: Aliasable): String {
     return "${this} ${table.alias}"
 }
 

@@ -1,13 +1,11 @@
-package ru.nehodov.sqotlin.core
-
-import ru.nehodov.sqotlin.DbConst
+package ru.nehodov.sqotlin
 
 infix fun String.AS(alias: String): String {
     val as_alias = if (alias.isNotEmpty()) "AS $alias" else ""
     return "${this} $as_alias"
 }
 
-infix fun String.AS(table: DbConst): String {
+infix fun String.AS(table: Aliasable): String {
     return "${this} ${table.alias}"
 }
 
