@@ -1,12 +1,16 @@
 package ru.nehodov.sqotlin
 
 infix fun String.AS(alias: String): String {
-    val as_alias = if (alias.isNotEmpty()) "AS $alias" else ""
-    return "${this} $as_alias"
+    val as_alias = if (alias.isNotEmpty()) " AS $alias" else ""
+    return """
+        |$this$as_alias
+        """.trimMargin("|")
 }
 
 infix fun String.AS(table: Aliasable): String {
-    return "${this} ${table.alias}"
+    return """
+        |$this ${table.alias}
+        """.trimMargin("|")
 }
 
 infix fun String.AND(right: String): String {
