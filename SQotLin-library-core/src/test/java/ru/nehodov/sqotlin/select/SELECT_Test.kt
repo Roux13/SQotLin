@@ -5,6 +5,7 @@ import org.junit.Test
 import ru.nehodov.sqotlin.AS
 import ru.nehodov.sqotlin.EQ
 import ru.nehodov.sqotlin.SQLiteConst.ALL
+import ru.nehodov.sqotlin.aggregateFunctions.AVG
 
 class SELECT_Test {
     private val table_name = "table_name"
@@ -277,6 +278,36 @@ class SELECT_Test {
                         "0" AS alias_a
                 ).FROM(
                         table_name
+                ).build()
+
+        assertEquals(expect, actual)
+    }
+
+    @Test
+    fun `when SELECT with AVG without alias`() {
+        val expect = """
+            |SELECT
+            |   AVG($column_a)
+        """.trimMargin()
+
+        val actual =
+                SELECT(
+                    AVG(column_a).AS_IS()
+                ).build()
+
+        assertEquals(expect, actual)
+    }
+
+    @Test
+    fun `when SELECT with AVG with alias`() {
+        val expect = """
+            |SELECT
+            |   AVG($column_a) AS $alias_a
+        """.trimMargin()
+
+        val actual =
+                SELECT(
+                        AVG(column_a) AS alias_a
                 ).build()
 
         assertEquals(expect, actual)
