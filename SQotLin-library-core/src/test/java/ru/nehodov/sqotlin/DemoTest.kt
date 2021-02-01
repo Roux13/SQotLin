@@ -1,6 +1,30 @@
 package ru.nehodov.sqotlin
 
+import org.junit.Test
+import ru.nehodov.sqotlin.aggregateFunctions.SUM
+import ru.nehodov.sqotlin.select.SELECT
+
 class DemoTest {
+
+    private val table_name = "table_name"
+    private val column_a = "column_a"
+    private val column_b = "column_b"
+    private val table_alias = "table_alias"
+    private val alias_a = "alias_a"
+    private val alias_b = "alias_b"
+
+    @Test
+    fun `when`() {
+        SELECT(
+            SUM(column_a).AS("sum"),
+            column_b
+        ).FROM(
+            column_a AS "a",
+            column_b
+        ).WHERE(column_a EQ 5)
+
+    }
+
 }
 
 

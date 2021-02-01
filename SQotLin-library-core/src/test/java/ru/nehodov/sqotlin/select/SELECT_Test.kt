@@ -265,7 +265,7 @@ class SELECT_Test {
     }
 
     @Test
-    fun `when SELECT any string as alias`() {
+    fun `when SELECT any string AS alias`() {
         val expect = """
             |SELECT
             |   0 AS $alias_a

@@ -3,47 +3,38 @@ package ru.nehodov.sqotlin.select
 open class SELECT(
         vararg columns: String
 ) {
-    protected open var query: String = SELECT
+    protected open lateinit var query: String
 
     init {
+        query = SELECT
         for (i in columns.indices) {
-            query = if (i == columns.lastIndex) {
-                """|$query
-                   |   ${columns[i]}
-                   """.trimMargin("|")
-            } else {
+            query =
                 """|$query
                    |   ${columns[i]},
                    """.trimMargin("|")
-            }
+
         }
+        query = query.trimEnd(',')
     }
 
     protected constructor(_query: String, vararg columns: String) : this(*columns) {
         query = _query
     }
 
-    fun FROM(table: String, AS: String = ""): FROM {
-        val alias = if (AS.isNotEmpty()) " $AS" else ""
-        return FROM(
-                query = """
-            |$query
-            |$FROM
-            |   $table$alias
-            """.trimMargin()
-        )
+    fun FROM(vararg tableList: String): From {
+        return From(this, *tableList)
     }
 
-    fun FROM(subQuery: SELECT, AS: String = ""): FROM {
-        val alias = if (AS.isNotEmpty()) " $AS" else ""
-        return FROM(
-                query = """
-            |$query
-            |$FROM
-            |   $subQuery $alias
-            """.trimMargin()
-        )
-    }
+//    fun FROM(subQuery: SELECT, AS: String = ""): From {
+//        val alias = if (AS.isNotEmpty()) " $AS" else ""
+//        return FROM(
+//                query = """
+//            |$query
+//            |$FROM
+//            |   $subQuery $alias
+//            """.trimMargin()
+//        )
+//    }
 
     fun INNER_JOIN(select: SELECT, alias: String = ""): JOIN {
         val as_alias = if (alias.isNotEmpty()) "AS $alias" else ""
