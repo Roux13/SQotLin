@@ -1,6 +1,6 @@
 package ru.nehodov.sqotlin.select
 
-import ru.nehodov.sqotlin.aggregateFunctions.SUM
+import ru.nehodov.sqotlin.aggregateFunctions.AggregateFunc
 
 class IFNULL(
         private val checked: String,
@@ -8,12 +8,12 @@ class IFNULL(
 ) {
 
     constructor(
-            groupFun: SUM,
+            groupFun: AggregateFunc,
             default: String
     ) : this(groupFun.AS_IS(), default)
 
     constructor(
-            groupFun: SUM,
+            groupFun: AggregateFunc,
             default: Any
     ) : this(groupFun.AS_IS(), default.toString())
 

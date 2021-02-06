@@ -1,7 +1,10 @@
 package ru.nehodov.sqotlin
 
 import org.junit.Test
+import ru.nehodov.sqotlin.SQLiteConst.ALL
 import ru.nehodov.sqotlin.aggregateFunctions.SUM
+import ru.nehodov.sqotlin.select.COALESCE
+import ru.nehodov.sqotlin.select.IFNULL
 import ru.nehodov.sqotlin.select.SELECT
 
 class DemoTest {
@@ -16,17 +19,36 @@ class DemoTest {
     @Test
     fun `when`() {
         SELECT(
-            SUM(column_a).AS("sum"),
-            column_b
+            SUM(column_a) AS "sum",
+            IFNULL(column_b, "") AS alias_a,
+            COALESCE(column_a, column_b, "") AS alias_b,
+            "1" AS alias_a,
         ).FROM(
             column_a AS "a",
             column_b
         ).WHERE(column_a EQ 5)
+            .sql()
+
+        SELECT(
+            SUM(column_a) AS "sum",
+            column_b
+        ).FROM(
+            column_a AS "a",
+            column_b
+        ).INNER_JOIN(
+            table_name ON column_a EQ column_b
+        ).INNER_JOIN(
+            table_name ON column_b NEQ column_a
+        ).LEFT_JOIN(
+            table_name ON (column_a EQ column_b)
+        ).CROSS_JOIN(
+            SELECT(ALL).FROM(table_name).sql()
+        ).WHERE(table_name EQ 1)
+            .sql()
 
     }
 
 }
-
 
 
 //val testQuery = """

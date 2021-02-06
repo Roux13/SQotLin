@@ -2,7 +2,7 @@ package ru.nehodov.sqotlin.select
 
 open class SELECT(
         vararg columns: String
-) {
+): ISelect {
     protected open lateinit var query: String
 
     init {
@@ -36,16 +36,6 @@ open class SELECT(
 //        )
 //    }
 
-    fun INNER_JOIN(select: SELECT, alias: String = ""): JOIN {
-        val as_alias = if (alias.isNotEmpty()) "AS $alias" else ""
-        return JOIN("$query\n  JOIN ${select.query + as_alias}")
-    }
-
-    fun INNER_JOIN(table: String, alias: String = ""): JOIN {
-        val as_alias = if (alias.isNotEmpty()) "AS $alias" else ""
-        return JOIN("$query\n   JOIN $table + $as_alias}")
-    }
-
 
 //    fun GROUP_BY(clause: String): SELECT {
 //        return SELECT(
@@ -55,7 +45,7 @@ open class SELECT(
 //        )
 //    }
 
-    open fun build(): String = query
+    override fun sql(): String = query
     override fun toString(): String {
         return query
     }
@@ -84,7 +74,7 @@ open class SELECT(
 
         }
 
-        override fun build() = query
+        override fun sql() = query
 
     }
 }

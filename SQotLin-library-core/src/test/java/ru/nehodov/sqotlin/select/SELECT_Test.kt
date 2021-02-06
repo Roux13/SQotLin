@@ -25,7 +25,7 @@ class SELECT_Test {
         val actual =
                 SELECT(
                         "a + a"
-                ).build()
+                ).sql()
 
         assertEquals(expect, actual)
     }
@@ -40,7 +40,7 @@ class SELECT_Test {
         val actual =
                 SELECT.DISTINCT(
                         "a + a"
-                ).build()
+                ).sql()
 
         assertEquals(expect, actual)
     }
@@ -59,7 +59,7 @@ class SELECT_Test {
                         column_a
                 ).FROM(
                         table_name
-                ).build()
+                ).sql()
 
         assertEquals(expect, actual)
     }
@@ -74,7 +74,7 @@ class SELECT_Test {
         val actual =
                 SELECT.DISTINCT(
                         column_a
-                ).build()
+                ).sql()
 
         assertEquals(expect, actual)
     }
@@ -95,7 +95,7 @@ class SELECT_Test {
                         column_b
                 ).FROM(
                         table_name
-                ).build()
+                ).sql()
 
         assertEquals(expect, actual)
     }
@@ -116,7 +116,7 @@ class SELECT_Test {
                         column_b
                 ).FROM(
                         table_name
-                ).build()
+                ).sql()
 
         assertEquals(expect, actual)
     }
@@ -139,7 +139,7 @@ class SELECT_Test {
                         table_name
                 ).WHERE(
                         column_a EQ 3
-                ).build()
+                ).sql()
 
         assertEquals(expect, actual)
     }
@@ -158,7 +158,7 @@ class SELECT_Test {
                         column_a AS "alias_a"
                 ).FROM(
                         table_name
-                ).build()
+                ).sql()
 
         assertEquals(expect, actual)
     }
@@ -177,7 +177,7 @@ class SELECT_Test {
                         column_a AS alias_a
                 ).FROM(
                         table_name
-                ).build()
+                ).sql()
 
         assertEquals(expect, actual)
     }
@@ -198,7 +198,7 @@ class SELECT_Test {
                         column_b
                 ).FROM(
                         table_name
-                ).build()
+                ).sql()
 
         assertEquals(expect, actual)
     }
@@ -219,7 +219,7 @@ class SELECT_Test {
                         column_b AS alias_b
                 ).FROM(
                         table_name
-                ).build()
+                ).sql()
 
         assertEquals(expect, actual)
     }
@@ -240,7 +240,7 @@ class SELECT_Test {
                         column_b AS alias_b
                 ).FROM(
                         table_name AS table_alias
-                ).build()
+                ).sql()
 
         assertEquals(expect, actual)
     }
@@ -259,7 +259,7 @@ class SELECT_Test {
                         ALL
                 ).FROM(
                         table_name
-                ).build()
+                ).sql()
 
         assertEquals(expect, actual)
     }
@@ -278,7 +278,7 @@ class SELECT_Test {
                         "0" AS alias_a
                 ).FROM(
                         table_name
-                ).build()
+                ).sql()
 
         assertEquals(expect, actual)
     }
@@ -293,7 +293,7 @@ class SELECT_Test {
         val actual =
                 SELECT(
                     AVG(column_a).AS_IS()
-                ).build()
+                ).sql()
 
         assertEquals(expect, actual)
     }
@@ -308,7 +308,7 @@ class SELECT_Test {
         val actual =
                 SELECT(
                         AVG(column_a) AS alias_a
-                ).build()
+                ).sql()
 
         assertEquals(expect, actual)
     }

@@ -1,12 +1,12 @@
 package ru.nehodov.sqotlin.select
 
-class From(select: SELECT, vararg tableList: String) {
+class From(select: ISelect, vararg tableList: String): ISelect {
 
     private var query: String
 
     init {
         query = """
-            |${select.build()}
+            |${select.sql()}
             |$FROM
         """.trimMargin()
         for (i in tableList.indices) {
@@ -23,7 +23,19 @@ class From(select: SELECT, vararg tableList: String) {
         return Where(this, rowFilter)
     }
 
-    fun build() = query
+    fun INNER_JOIN(table: String): Join {
+        return InnerJoin(this, table)
+    }
+
+    fun CROSS_JOIN(table: String): Join {
+        return CrossJoin(this, table)
+    }
+
+    fun LEFT_JOIN(table: String): Join {
+        return LeftJoin(this, table)
+    }
+
+    override fun sql() = query
 
     companion object {
         private const val FROM = "FROM"
