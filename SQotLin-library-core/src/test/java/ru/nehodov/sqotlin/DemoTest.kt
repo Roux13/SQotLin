@@ -45,7 +45,6 @@ class DemoTest {
             SELECT(ALL).FROM(table_name).sql()
         ).WHERE(table_name EQ 1)
             .sql()
-
     }
 
 }

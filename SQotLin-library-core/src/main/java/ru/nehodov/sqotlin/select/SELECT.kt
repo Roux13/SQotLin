@@ -1,28 +1,17 @@
 package ru.nehodov.sqotlin.select
 
 open class SELECT(
-        vararg columns: String
-): ISelect {
-    protected open lateinit var query: String
+    vararg columns: String,
+    isDistinct: Boolean = false,
+) : ISelect {
+    private val query: SelectQuery = SelectQuery(isDistinct)
 
     init {
-        query = SELECT
-        for (i in columns.indices) {
-            query =
-                """|$query
-                   |   ${columns[i]},
-                   """.trimMargin("|")
-
-        }
-        query = query.trimEnd(',')
-    }
-
-    protected constructor(_query: String, vararg columns: String) : this(*columns) {
-        query = _query
+        query.setColumns(*columns)
     }
 
     fun FROM(vararg tableList: String): From {
-        return From(this, *tableList)
+        return From(query, *tableList)
     }
 
 //    fun FROM(subQuery: SELECT, AS: String = ""): From {
@@ -45,38 +34,11 @@ open class SELECT(
 //        )
 //    }
 
-    override fun sql(): String = query
+    override fun sql(): String = query.sql()
     override fun toString(): String {
-        return query
+        return query.sql()
     }
 
-
-    companion object {
-        private const val SELECT = "SELECT"
-        private const val SELECT_DISTINCT = "SELECT DISTINCT"
-        private const val FROM = "FROM"
-
-    }
-
-    class DISTINCT(
-            vararg columns: String
-    ) : SELECT() {
-        override var query: String = SELECT_DISTINCT
-
-        init {
-            for (i in columns.indices) {
-                query = """
-                       |$query
-                       |   ${columns[i]},
-                   """.trimMargin("|")
-            }
-            query = query.trimEnd(',')
-
-        }
-
-        override fun sql() = query
-
-    }
 }
 
 

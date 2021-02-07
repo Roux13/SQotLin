@@ -1,20 +1,11 @@
 package ru.nehodov.sqotlin.select
 
-class Where(FROM: ISelect, rowFilter: String) : ISelect {
-
-    private var query: String
+class Where(private val query: SelectQuery, rowFilter: String) : ISelect {
 
     init {
-        query = """
-        |${FROM.sql()}
-        |$WHERE
-        |   $rowFilter
-        """.trimMargin()
+        query.addWhere(rowFilter)
     }
 
-    override fun sql() = query
+    override fun sql(): String = query.sql()
 
-    companion object {
-        const val WHERE = "WHERE"
-    }
 }

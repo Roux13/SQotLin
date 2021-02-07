@@ -1,43 +1,26 @@
 package ru.nehodov.sqotlin.select
 
-class From(select: ISelect, vararg tableList: String): ISelect {
-
-    private var query: String
+class From(private val query: SelectQuery, vararg tableList: String): ISelect {
 
     init {
-        query = """
-            |${select.sql()}
-            |$FROM
-        """.trimMargin()
-        for (i in tableList.indices) {
-            query =
-                """|$query
-                   |   ${tableList[i]},
-                   """.trimMargin("|")
-
-        }
-        query = query.trimEnd(',')
+        query.setTables(*tableList)
     }
 
     fun WHERE(rowFilter: String): Where {
-        return Where(this, rowFilter)
+        return Where(query, rowFilter)
     }
 
     fun INNER_JOIN(table: String): Join {
-        return InnerJoin(this, table)
+        return InnerJoin(query, table)
     }
 
     fun CROSS_JOIN(table: String): Join {
-        return CrossJoin(this, table)
+        return CrossJoin(query, table)
     }
 
     fun LEFT_JOIN(table: String): Join {
-        return LeftJoin(this, table)
+        return LeftJoin(query, table)
     }
 
-    override fun sql() = query
-
-    companion object {
-        private const val FROM = "FROM"
-    }
+    override fun sql(): String = query.sql()
 }

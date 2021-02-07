@@ -38,7 +38,7 @@ class SELECT_Test {
         """.trimMargin("|")
 
         val actual =
-                SELECT.DISTINCT(
+                SELECT_DISTINCT(
                         "a + a"
                 ).sql()
 
@@ -72,7 +72,7 @@ class SELECT_Test {
         """.trimMargin("|")
 
         val actual =
-                SELECT.DISTINCT(
+                SELECT_DISTINCT(
                         column_a
                 ).sql()
 
@@ -111,7 +111,7 @@ class SELECT_Test {
         """.trimMargin("|")
 
         val actual =
-                SELECT.DISTINCT(
+                SELECT_DISTINCT(
                         column_a,
                         column_b
                 ).FROM(
