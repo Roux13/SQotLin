@@ -4,8 +4,6 @@ class SelectQuery(private val isDistinct: Boolean) {
 
     private var columns: String? = ""
     private var from: String? = null
-
-    //    var from: SELECT.From? = null
     private val _joins: MutableList<String?> = mutableListOf()
     private val joins: String?
         get() = if (_joins.isNotEmpty()) _joins.joinToString(
@@ -29,9 +27,9 @@ class SelectQuery(private val isDistinct: Boolean) {
         joins?.let { query.appendLine().append("|$joins") }
         where?.let { query.appendLine().append("|$where") }
         groupBy?.let { query.appendLine().append("|$groupBy") }
-        having?.let { query.appendLine().append("|$having")}
-        orderBy?.let { query.appendLine().append("|$orderBy")}
-        limit?.let { query.appendLine().append("|$limit")}
+        having?.let { query.appendLine().append("|$having") }
+        orderBy?.let { query.appendLine().append("|$orderBy") }
+        limit?.let { query.appendLine().append("|$limit") }
         return query.toString().trimMargin().trim()
     }
 
