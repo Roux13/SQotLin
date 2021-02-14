@@ -96,6 +96,10 @@ project.afterEvaluate {
                             kotlinClasses
                     ]))
 
+                    def mainSrc = "$project.projectDir/src/main/java"
+
+                    sourceDirectories.setFrom(files([mainSrc]))
+
                     def variantSourceSets = variant.sourceSets.java.srcDirs.collect { it.path }.flatten()
                     sourceDirectories.setFrom(project.files(variantSourceSets))
 
