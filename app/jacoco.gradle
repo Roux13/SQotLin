@@ -1,9 +1,9 @@
 apply plugin: 'jacoco'
 
 jacoco {
-    toolVersion = "0.8.5"
+    toolVersion = "0.8.6"
     // Custom reports directory can be specfied like this:
-    // reportsDir = file("$buildDir/customJacocoReportDir")
+     reportsDir = file("$buildDir/customJacocoReportDir")
 }
 
 tasks.withType(Test) {
@@ -23,6 +23,7 @@ project.afterEvaluate {
                 def androidTestCoverageTask = "create${variantName.capitalize()}CoverageReport"
 
                 tasks.create(name: "${unitTestTask}Coverage", type: JacocoReport, dependsOn: [
+                        "$test",
                         "$unitTestTask",
                         "$androidTestCoverageTask"
                 ]) {
