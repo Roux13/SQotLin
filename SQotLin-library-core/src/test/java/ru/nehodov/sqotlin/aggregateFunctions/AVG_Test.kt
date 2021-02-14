@@ -2,6 +2,8 @@ package ru.nehodov.sqotlin.aggregateFunctions
 
 import org.junit.Assert
 import org.junit.Test
+import ru.nehodov.sqotlin.extensions.AS
+import ru.nehodov.sqotlin.extensions.AS_IS
 
 class AVG_Test {
 

@@ -30,10 +30,9 @@ class SelectQueryTest {
         query.setColumns(column_a, column_b)
 
         val expect = """
-            |SELECT(
+            |SELECT
             |   $column_a,
             |   $column_b
-            |   )
         """.trimMargin()
 
         val actual = query.sql()

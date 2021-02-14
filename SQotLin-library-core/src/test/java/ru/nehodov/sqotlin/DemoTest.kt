@@ -3,6 +3,7 @@ package ru.nehodov.sqotlin
 import org.junit.Test
 import ru.nehodov.sqotlin.SQLiteConst.ALL
 import ru.nehodov.sqotlin.aggregateFunctions.SUM
+import ru.nehodov.sqotlin.extensions.AS
 import ru.nehodov.sqotlin.select.COALESCE
 import ru.nehodov.sqotlin.select.IFNULL
 import ru.nehodov.sqotlin.select.SELECT
@@ -42,7 +43,7 @@ class DemoTest {
         ).LEFT_JOIN(
             table_name ON (column_a EQ column_b)
         ).CROSS_JOIN(
-            SELECT(ALL).FROM(table_name).sql()
+            SELECT(ALL).FROM(table_name).sql() AS alias_b
         ).WHERE(table_name EQ 1)
             .sql()
     }

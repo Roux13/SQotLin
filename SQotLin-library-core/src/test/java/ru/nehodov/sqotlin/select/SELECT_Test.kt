@@ -6,6 +6,8 @@ import ru.nehodov.sqotlin.AS
 import ru.nehodov.sqotlin.EQ
 import ru.nehodov.sqotlin.SQLiteConst.ALL
 import ru.nehodov.sqotlin.aggregateFunctions.AVG
+import ru.nehodov.sqotlin.extensions.AS
+import ru.nehodov.sqotlin.extensions.AS_IS
 
 class SELECT_Test {
     private val table_name = "table_name"

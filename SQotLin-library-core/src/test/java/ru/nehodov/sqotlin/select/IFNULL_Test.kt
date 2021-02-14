@@ -3,6 +3,8 @@ package ru.nehodov.sqotlin.select
 import org.junit.Assert
 import org.junit.Test
 import ru.nehodov.sqotlin.SQLiteConst.EMPTY
+import ru.nehodov.sqotlin.extensions.AS
+import ru.nehodov.sqotlin.extensions.AS_IS
 
 class IFNULL_Test {
     private val column_a = "column_a"
