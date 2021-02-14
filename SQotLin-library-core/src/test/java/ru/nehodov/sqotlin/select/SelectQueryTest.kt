@@ -1,8 +1,5 @@
 package ru.nehodov.sqotlin.select
 
-import org.junit.Assert.assertEquals
-import org.junit.Test
-
 class SelectQueryTest {
 
     private val column_a = "column_a"
@@ -24,19 +21,19 @@ class SelectQueryTest {
 //        assertEquals(expect, actual)
 //    }
 
-    @Test
-    fun `when sql`() {
-        val query = SelectQuery(false)
-        query.setColumns(column_a, column_b)
-
-        val expect = """
-            |SELECT
-            |   $column_a,
-            |   $column_b
-        """.trimMargin()
-
-        val actual = query.sql()
-
-        assertEquals(expect, actual)
-    }
+//    @Test
+//    fun `when sql`() {
+//        val query = SelectQuery(false)
+//        query.setColumns(column_a, column_b)
+//
+//        val expect = """
+//            |SELECT
+//            |   $column_a,
+//            |   $column_b
+//        """.trimMargin()
+//
+//        val actual = query.sql()
+//
+//        assertEquals(expect, actual)
+//    }
 }
