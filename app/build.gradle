@@ -1,8 +1,6 @@
-plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-    id 'jacoco'
-}
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply from: "jacoco.gradle"
 
 android {
     compileSdkVersion 30
@@ -23,8 +21,12 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        debug {
-            testCoverageEnabled true
+        buildTypes {
+            debug {
+                applicationIdSuffix ".debug"
+                minifyEnabled false
+                testCoverageEnabled true
+            }
         }
     }
     compileOptions {
