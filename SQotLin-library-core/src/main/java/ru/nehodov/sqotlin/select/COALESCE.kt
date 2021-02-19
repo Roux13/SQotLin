@@ -6,7 +6,7 @@ class COALESCE(
 ) {
 
     constructor(vararg checked: String, default: Int) : this(*checked, default.toString())
-    constructor(vararg checked: Any, default: Int) : this(*checked.map { it.toString() }.toTypedArray(), default.toString())
+    constructor(vararg checked: Any, default: Any) : this(*checked.map { it.toString() }.toTypedArray(), default.toString())
 
     val COALESCE = "COALESCE"
 

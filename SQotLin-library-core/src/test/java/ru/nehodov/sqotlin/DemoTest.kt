@@ -4,6 +4,7 @@ import org.junit.Test
 import ru.nehodov.sqotlin.SQLiteConst.ALL
 import ru.nehodov.sqotlin.aggregateFunctions.SUM
 import ru.nehodov.sqotlin.extensions.AS
+import ru.nehodov.sqotlin.extensions.UNION_ALL
 import ru.nehodov.sqotlin.select.COALESCE
 import ru.nehodov.sqotlin.select.IFNULL
 import ru.nehodov.sqotlin.select.SELECT
@@ -26,16 +27,41 @@ class DemoTest {
             "1" AS alias_a,
         ).FROM(
             column_a AS "a",
-            column_b
+            column_b,
+            SELECT(ALL).FROM(table_name).sql()
         ).WHERE(column_a EQ 5)
             .sql()
+
+        val SELECT_ALL_FROM = SELECT(ALL).FROM(table_name).sql()
 
         SELECT(
             SUM(column_a) AS "sum",
             column_b
         ).FROM(
             column_a AS "a",
+            column_b,
+            SELECT_ALL_FROM AS "alis3"
+        ).INNER_JOIN(
+            table_name ON column_a EQ column_b
+        ).INNER_JOIN(
+            table_name ON column_b NEQ column_a
+        ).LEFT_JOIN(
+            table_name ON (column_a EQ column_b)
+        ).CROSS_JOIN(
+            SELECT(ALL).FROM(table_name).sql() AS alias_b
+        ).WHERE(table_name EQ 1)
+            .sql()
+
+
+        SELECT(
+            SUM(column_a) AS "sum",
             column_b
+        ).FROM(
+            column_a AS "a",
+            column_b,
+            SELECT(ALL).FROM(table_name)
+                    UNION_ALL
+            SELECT(column_a).FROM(table_name)
         ).INNER_JOIN(
             table_name ON column_a EQ column_b
         ).INNER_JOIN(
