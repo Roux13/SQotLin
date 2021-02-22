@@ -1,21 +1,40 @@
 package ru.nehodov.sqotlin.select
 
-class COALESCE(
-        vararg checked: String,
-        val default: String = ""
-) {
+import ru.nehodov.sqotlin.Aliasable
 
-    constructor(vararg checked: String, default: Int) : this(*checked, default.toString())
-    constructor(vararg checked: Any, default: Any) : this(*checked.map { it.toString() }.toTypedArray(), default.toString())
+class COALESCE(
+    vararg checked: String,
+    val default: String = "",
+) : Aliasable {
+
+    constructor(vararg checked: String, default: Int) : this(*checked, default = default.toString())
+    constructor(vararg checked: Any, default: Any) : this(
+        *checked.map { it.toString() }.toTypedArray(),
+        default = default.toString()
+    )
 
     val COALESCE = "COALESCE"
 
-    var allChecked = ""
+    var clause = ""
 
     init {
-        checked.forEach {
-            allChecked.plus("$it, ")
-        }
-        allChecked.trimEnd(' ').trimEnd(',')
+        clause = checked.joinToString(", ")
     }
+
+//    infix fun AS(alias: String): String {
+//        val asAlias = if (alias.isNotEmpty()) " AS $alias" else ""
+//        return "$COALESCE($clause, $default)$asAlias"
+//    }
+//
+//    fun AS_IS(): String {
+//        return AS("")
+//    }
+
+    override fun toString(): String {
+        return """
+            |$COALESCE($clause, $default)
+            """.trimMargin()
+    }
+
+
 }

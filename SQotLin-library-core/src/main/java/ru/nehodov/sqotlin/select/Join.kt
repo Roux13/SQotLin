@@ -4,18 +4,7 @@ open class Join(private val query: SelectQuery, joinType: String, table: String)
 
     init {
         query.addJoin("$joinType $table")
-//            query = """
-//            |$incomingQuery
-//            |   $joinType $table
-//            """.trimMargin()
     }
-
-//        infix fun ON(joinCondition: String): Join {
-//            query = """
-//            |$query "ON" $joinCondition
-//            """.trimMargin()
-//            return this
-//        }
 
     fun INNER_JOIN(table: String): Join {
         return InnerJoin(query, table)
@@ -31,6 +20,10 @@ open class Join(private val query: SelectQuery, joinType: String, table: String)
 
     fun WHERE(rowFilter: String): Where {
         return Where(query, rowFilter)
+    }
+
+    fun GROUP_BY(vararg groupClause: String): GroupBy {
+        return GroupBy(query, *groupClause)
     }
 
     override fun sql(): String = query.sql()

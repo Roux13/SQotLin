@@ -12,9 +12,10 @@ class SelectQuery(private val isDistinct: Boolean) {
         ) else null
     private var where: String? = null
     private var orderBy: String? = null
-    private var limit: String? = null
     private var groupBy: String? = null
     private var having: String? = null
+    private var limit: String? = null
+    private var offset: String? = null
 
     fun sql(): String {
         val query = StringBuilder(
@@ -30,23 +31,19 @@ class SelectQuery(private val isDistinct: Boolean) {
         having?.let { query.appendLine().append("|$having") }
         orderBy?.let { query.appendLine().append("|$orderBy") }
         limit?.let { query.appendLine().append("|$limit") }
+        offset?.let { query.append(" $offset") }
         return query.toString().trimMargin().trim()
     }
 
     fun setColumns(vararg columns: String) {
-        val sb = StringBuilder()
-        columns.forEach {
-            sb.append("   $it,").appendLine()
-        }
-        this.columns = sb.toString().trim().trimEnd(',')
+        this.columns = columns.joinToString(",\n   ")
     }
 
     fun setTables(vararg tables: String) {
-        val sb = StringBuilder("""|$FROM""")
-        tables.forEach {
-            sb.appendLine().append("|   $it,")
-        }
-        from = sb.toString().trimEnd(',').trim().trimMargin()
+        from = """
+            |$FROM
+            |   ${tables.joinToString(",\n   ")}
+        """.trimMargin()
     }
 
     fun addJoin(join: String) {
@@ -60,39 +57,34 @@ class SelectQuery(private val isDistinct: Boolean) {
         """.trimMargin()
     }
 
-    fun addGroupBy(expr: String) {
+    fun addGroupBy(vararg expr: String) {
         groupBy = """
             |$GROUP_BY
-            |   $expr
+            |   ${expr.joinToString(",\n   ")}
             """.trimMargin()
     }
 
     fun addHaving(expr: String) {
-        having = "$HAVING $expr"
+        having = """
+            |$HAVING
+            |   $expr
+        """.trimMargin()
     }
 
-    fun addOrderBy(orderingTerm: String) {
-        orderBy = "$ORDER_BY $orderingTerm"
+    fun addOrderBy(vararg orderingTerms: String) {
+        orderBy = """
+            |$ORDER_BY 
+            |   ${orderingTerms.joinToString(",\n   ")}
+        """.trimMargin()
     }
 
-    fun addLimit(expr: String) {
-        limit = "$LIMIT $expr"
+    fun addLimit(limit: Int) {
+        this.limit = "$LIMIT $limit"
     }
-//    private fun embedColumns(): String {
-//        val sb = StringBuilder()
-//        columns.forEach {
-//            sb.append("   $it,").appendLine()
-//        }
-//        return sb.toString().trim().trimEnd(',')
-//    }
-//
-//    fun embedTables(): String {
-//        val sb = StringBuilder("""|FROM""")
-//        tables.forEach {
-//            sb.appendLine().append("|   $it,")
-//        }
-//        return sb.toString().trimEnd(',')
-//    }
+
+    fun addOffset(offset: Int) {
+        this.offset = "$OFFSET $offset"
+    }
 
     companion object {
         const val SELECT = "SELECT"
@@ -103,6 +95,7 @@ class SelectQuery(private val isDistinct: Boolean) {
         const val HAVING = "HAVING"
         const val ORDER_BY = "ORDER BY"
         const val LIMIT = "LIMIT"
+        const val OFFSET = "OFFSET"
         const val SPACES = "   "
     }
 }

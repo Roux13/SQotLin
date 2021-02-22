@@ -1,28 +1,37 @@
 package ru.nehodov.sqotlin.select
 
+import ru.nehodov.sqotlin.Aliasable
+import ru.nehodov.sqotlin.SqlComparable
 import ru.nehodov.sqotlin.aggregateFunctions.AggregateFunc
-import ru.nehodov.sqotlin.extensions.AS_IS
 
 class IFNULL(
         val checked: String,
         val default: String
-) {
+) : SqlComparable, Aliasable {
 
     constructor(
-            groupFun: AggregateFunc,
-            default: String
-    ) : this(groupFun.AS_IS(), default)
+        groupFun: AggregateFunc,
+        default: String
+    ) : this(groupFun.toString(), default)
 
     constructor(
-            groupFun: AggregateFunc,
-            default: Any
-    ) : this(groupFun.AS_IS(), default.toString())
+        groupFun: AggregateFunc,
+        default: Any
+    ) : this(groupFun.toString(), default.toString())
 
     constructor(
-            checked: String,
-            default: Any
+        checked: String,
+        default: Any
     ) : this(checked, default.toString())
 
-}
+    override fun toString(): String {
+        return """
+            |$IFNULL($checked, $default)
+        """.trimMargin("|")
+    }
 
+    companion object {
+        private const val IFNULL = "IFNULL"
+    }
+}
 

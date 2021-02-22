@@ -31,7 +31,7 @@ class Test {
     }
 
     @After
-    fun tearDown() {
+    fun shutDown() {
         helper.close()
     }
 

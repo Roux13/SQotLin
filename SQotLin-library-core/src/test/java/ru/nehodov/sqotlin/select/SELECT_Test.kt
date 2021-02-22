@@ -2,12 +2,9 @@ package ru.nehodov.sqotlin.select
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import ru.nehodov.sqotlin.AS
-import ru.nehodov.sqotlin.EQ
 import ru.nehodov.sqotlin.SQLiteConst.ALL
 import ru.nehodov.sqotlin.aggregateFunctions.AVG
-import ru.nehodov.sqotlin.extensions.AS
-import ru.nehodov.sqotlin.extensions.AS_IS
+import ru.nehodov.sqotlin.extensions.*
 
 class SELECT_Test {
     private val table_name = "table_name"
@@ -315,25 +312,97 @@ class SELECT_Test {
         assertEquals(expect, actual)
     }
 
-//    @Test
-//    fun test() {
-//        SELECT(
-//                IFNULL(column_a, EMPTY) AS alias_a,
-//                IFNULL(column_b, 0) AS alias_b,
-//                COALESCE(column_a, column_b, default = "").AS_IS(),
-//                "1" AS "alias_c"
-//        ).FROM(
-//                table_name
-//        ).WHERE(
-//                table_name
-//        ).build()
-//
-//        SELECT.DISTINCT(
-//                ALL
-//        ).FROM(
-//                SELECT(
-//                ALL
-//                )
-//        )
-//    }
+    @Test
+    fun `when SELECT FROM ORDER BY`() {
+        val expext = """
+            |SELECT
+            |   $column_a
+            |FROM
+            |   $table_name
+            |ORDER BY 
+            |   $column_a
+        """.trimMargin()
+
+        val actual =
+            SELECT(
+                column_a
+            ).FROM(
+                table_name
+            ).ORDER_BY(
+                column_a
+            ).sql()
+
+        assertEquals(expext, actual)
+    }
+
+    @Test
+    fun `when SELECT FROM ORDER BY ASC`() {
+        val expext = """
+            |SELECT
+            |   $column_a
+            |FROM
+            |   $table_name
+            |ORDER BY 
+            |   $column_a ASC
+        """.trimMargin()
+
+        val actual =
+            SELECT(
+                column_a
+            ).FROM(
+                table_name
+            ).ORDER_BY(
+                column_a.ASC()
+            ).sql()
+
+        assertEquals(expext, actual)
+    }
+
+    @Test
+    fun `when SELECT FROM ORDER BY DESC`() {
+        val expext = """
+            |SELECT
+            |   $column_a
+            |FROM
+            |   $table_name
+            |ORDER BY 
+            |   $column_a DESC
+        """.trimMargin()
+
+        val actual =
+            SELECT(
+                column_a
+            ).FROM(
+                table_name
+            ).ORDER_BY(
+                column_a.DESC()
+            ).sql()
+
+        assertEquals(expext, actual)
+    }
+
+    @Test
+    fun `when SELECT FROM ORDER BY column_a DESC & column_b ASC`() {
+        val expext = """
+            |SELECT
+            |   $column_a
+            |FROM
+            |   $table_name
+            |ORDER BY 
+            |   $column_a DESC,
+            |   $column_b ASC
+        """.trimMargin()
+
+        val actual =
+            SELECT(
+                column_a
+            ).FROM(
+                table_name
+            ).ORDER_BY(
+                column_a.DESC(),
+                column_b.ASC()
+            ).sql()
+
+        assertEquals(expext, actual)
+    }
 }

@@ -2,9 +2,9 @@ package ru.nehodov.sqotlin
 
 import org.junit.Test
 import ru.nehodov.sqotlin.SQLiteConst.ALL
-import ru.nehodov.sqotlin.aggregateFunctions.SUM
-import ru.nehodov.sqotlin.extensions.AS
-import ru.nehodov.sqotlin.extensions.UNION_ALL
+import ru.nehodov.sqotlin.SQLiteConst.EMPTY
+import ru.nehodov.sqotlin.aggregateFunctions.*
+import ru.nehodov.sqotlin.extensions.*
 import ru.nehodov.sqotlin.select.COALESCE
 import ru.nehodov.sqotlin.select.IFNULL
 import ru.nehodov.sqotlin.select.SELECT
@@ -40,7 +40,7 @@ class DemoTest {
         ).FROM(
             column_a AS "a",
             column_b,
-            SELECT_ALL_FROM AS "alis3"
+            SELECT_ALL_FROM AS "alias3"
         ).INNER_JOIN(
             table_name ON column_a EQ column_b
         ).INNER_JOIN(
@@ -55,13 +55,19 @@ class DemoTest {
 
         SELECT(
             SUM(column_a) AS "sum",
+            AVG(column_a) AS alias_a,
+            MAX(column_a) AS alias_b,
+            IFNULL(column_a, EMPTY) AS alias_b,
+            GROUP_CONCAT(column_a, ";") AS alias_a,
+            MIN(column_a) AS alias_a,
+            COUNT(column_a) AS alias_a,
             column_b
         ).FROM(
             column_a AS "a",
             column_b,
             SELECT(ALL).FROM(table_name)
                     UNION_ALL
-            SELECT(column_a).FROM(table_name)
+                    SELECT(column_a).FROM(table_name)
         ).INNER_JOIN(
             table_name ON column_a EQ column_b
         ).INNER_JOIN(
@@ -70,7 +76,13 @@ class DemoTest {
             table_name ON (column_a EQ column_b)
         ).CROSS_JOIN(
             SELECT(ALL).FROM(table_name).sql() AS alias_b
-        ).WHERE(table_name EQ 1)
+        ).WHERE(
+            table_name EQ 1
+        ).GROUP_BY(
+            column_a
+        ).ORDER_BY(
+            column_a
+        ).LIMIT(10).OFFSET(5)
             .sql()
     }
 

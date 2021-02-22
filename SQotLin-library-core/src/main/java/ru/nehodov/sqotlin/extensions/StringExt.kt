@@ -1,4 +1,4 @@
-package ru.nehodov.sqotlin
+package ru.nehodov.sqotlin.extensions
 
 infix fun String.AS(alias: String): String {
     val as_alias = if (alias.isNotEmpty()) " AS $alias" else ""
@@ -7,11 +7,11 @@ infix fun String.AS(alias: String): String {
         """.trimMargin("|")
 }
 
-infix fun String.AS(table: Aliasable): String {
-    return """
-        |$this ${table.alias}
-        """.trimMargin("|")
-}
+//infix fun String.AS(table: Aliasable): String {
+//    return """
+//        |$this ${table.alias}
+//        """.trimMargin("|")
+//}
 
 infix fun String.AND(right: String): String {
     val left = this
@@ -46,6 +46,30 @@ fun String.IN(vararg valueArgs: Any): String {
 infix fun String.LIKE(pattern: String): String {
     return """
         |LIKE '$pattern'
+    """.trimMargin()
+}
+
+fun String.IS_NULL(): String {
+    return """
+        |$this IS NULL
+    """.trimMargin()
+}
+
+fun String.IS_NOT_NULL(): String {
+    return """
+        |$this IS NOT NULL
+    """.trimMargin()
+}
+
+fun String.ASC(): String {
+    return """
+        |$this ASC
+    """.trimMargin()
+}
+
+fun String.DESC(): String {
+    return """
+        |$this DESC
     """.trimMargin()
 }
 

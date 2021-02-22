@@ -2,6 +2,7 @@ package ru.nehodov.sqotlin
 
 import org.junit.Assert
 import org.junit.Test
+import ru.nehodov.sqotlin.extensions.GREATorEQ
 
 class GreatOrEqStringExtTest {
 

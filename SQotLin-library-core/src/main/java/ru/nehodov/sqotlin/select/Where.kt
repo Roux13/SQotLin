@@ -6,6 +6,14 @@ class Where(private val query: SelectQuery, rowFilter: String) : ISelect {
         query.addWhere(rowFilter)
     }
 
+    fun GROUP_BY(vararg groupClause: String): GroupBy {
+        return GroupBy(query, *groupClause)
+    }
+
+    fun ORDER_BY(vararg orderingTerms: String): OrderBy {
+        return OrderBy(query, *orderingTerms)
+    }
+
     override fun sql(): String = query.sql()
 
 }

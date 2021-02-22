@@ -5,7 +5,7 @@ import org.junit.Test
 import ru.nehodov.sqotlin.extensions.AS
 import ru.nehodov.sqotlin.extensions.AS_IS
 
-class SUMTest {
+class SUM_Test {
 
     private val column_a = "column_a"
     private val alias_a = "alias_a"
