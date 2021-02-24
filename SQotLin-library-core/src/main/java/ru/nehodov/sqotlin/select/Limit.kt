@@ -11,4 +11,6 @@ class Limit(private val query: SelectQuery, limit: Int): ISelect {
     }
 
     override fun sql(): String = query.sql()
+    override fun subQuery(): String = query.subQuery()
+    override fun toString() = sql()
 }

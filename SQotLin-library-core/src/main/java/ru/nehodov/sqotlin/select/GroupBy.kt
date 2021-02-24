@@ -15,4 +15,6 @@ class GroupBy(private val query: SelectQuery, vararg groupClause: String) : ISel
     }
 
     override fun sql(): String = query.sql()
+    override fun subQuery(): String = query.subQuery()
+    override fun toString() = sql()
 }

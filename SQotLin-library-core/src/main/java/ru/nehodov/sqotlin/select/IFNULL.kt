@@ -1,12 +1,13 @@
 package ru.nehodov.sqotlin.select
 
 import ru.nehodov.sqotlin.Aliasable
+import ru.nehodov.sqotlin.SQLiteConst.EMPTY
 import ru.nehodov.sqotlin.SqlComparable
 import ru.nehodov.sqotlin.aggregateFunctions.AggregateFunc
 
 class IFNULL(
         val checked: String,
-        val default: String
+        val default: String = EMPTY,
 ) : SqlComparable, Aliasable {
 
     constructor(
@@ -26,7 +27,7 @@ class IFNULL(
 
     override fun toString(): String {
         return """
-            |$IFNULL($checked, $default)
+            |$IFNULL($checked, ${if (default.isEmpty()) EMPTY else default}
         """.trimMargin("|")
     }
 

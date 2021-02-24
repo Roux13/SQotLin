@@ -4,4 +4,5 @@ interface ISelect {
 
     fun sql(): String
 
+    fun subQuery(): String
 }

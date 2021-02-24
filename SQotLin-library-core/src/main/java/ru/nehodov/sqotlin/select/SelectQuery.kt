@@ -35,14 +35,42 @@ class SelectQuery(private val isDistinct: Boolean) {
         return query.toString().trimMargin().trim()
     }
 
+    fun subQuery(): String {
+        val query = StringBuilder(
+            """
+            |($SELECT${if (isDistinct) " $DISTINCT" else ""}
+            |   ${columns ?: ""}
+            """
+        )
+        from?.let { query.append("|$from") }
+        joins?.let { query.appendLine().append("|$joins") }
+        where?.let { query.appendLine().append("|$where") }
+        groupBy?.let { query.appendLine().append("|$groupBy") }
+        having?.let { query.appendLine().append("|$having") }
+        orderBy?.let { query.appendLine().append("|$orderBy") }
+        limit?.let { query.appendLine().append("|$limit") }
+        offset?.let { query.append(" $offset") }
+        query.appendLine().append("|)")
+        return query.toString().trimMargin().trim()
+    }
+
     fun setColumns(vararg columns: String) {
         this.columns = columns.joinToString(",\n   ")
     }
 
     fun setTables(vararg tables: String) {
+        val _tables = """
+            |${tables.joinToString(",\n\t")}
+        """.trimMargin()
+//        val fromBuilder = StringBuilder(
+//            """
+//            |$FROM
+//            |   $_tables
+//        """
+//        )
         from = """
             |$FROM
-            |   ${tables.joinToString(",\n   ")}
+            |   $_tables
         """.trimMargin()
     }
 

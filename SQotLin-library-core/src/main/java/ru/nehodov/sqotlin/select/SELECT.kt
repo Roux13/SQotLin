@@ -14,13 +14,17 @@ open class SELECT(
         return From(query, *tableList)
     }
 
+    fun FROM(subQuery: ISelect): From {
+        return From(query, subQuery)
+    }
+
     fun ORDER_BY(vararg orderingTerms: String): OrderBy {
         return OrderBy(query, *orderingTerms)
     }
 
     override fun sql(): String = query.sql()
+    override fun subQuery(): String = query.subQuery()
     override fun toString() = sql()
-
 }
 
 

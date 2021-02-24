@@ -2,6 +2,8 @@ package ru.nehodov.sqotlin.select
 
 class From(private val query: SelectQuery, vararg tableList: String) : ISelect {
 
+    constructor(query: SelectQuery, subQuery: ISelect) : this(query, "|    (${subQuery.sql()})")
+
     init {
         query.setTables(*tableList)
     }
@@ -35,4 +37,6 @@ class From(private val query: SelectQuery, vararg tableList: String) : ISelect {
     }
 
     override fun sql(): String = query.sql()
+    override fun subQuery(): String = query.subQuery()
+    override fun toString() = sql()
 }

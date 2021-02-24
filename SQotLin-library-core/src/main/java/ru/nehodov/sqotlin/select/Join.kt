@@ -27,4 +27,6 @@ open class Join(private val query: SelectQuery, joinType: String, table: String)
     }
 
     override fun sql(): String = query.sql()
+    override fun subQuery(): String = query.subQuery()
+    override fun toString() = sql()
 }

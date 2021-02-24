@@ -28,11 +28,20 @@ class DemoTest {
         ).FROM(
             column_a AS "a",
             column_b,
-            SELECT(ALL).FROM(table_name).sql()
         ).WHERE(column_a EQ 5)
             .sql()
 
-        val SELECT_ALL_FROM = SELECT(ALL).FROM(table_name).sql()
+        SELECT(
+            SUM(column_a) AS "sum",
+            IFNULL(column_b) AS alias_a,
+            COALESCE(column_a, column_b) AS alias_b,
+            "1" AS alias_a,
+        ).FROM(
+            SELECT(ALL).FROM(table_name).subQuery()
+        ).WHERE(column_a EQ 5)
+            .sql()
+
+        val SELECT_ALL_FROM = SELECT(ALL).FROM(table_name).subQuery()
 
         SELECT(
             SUM(column_a) AS "sum",
@@ -48,7 +57,7 @@ class DemoTest {
         ).LEFT_JOIN(
             table_name ON (column_a EQ column_b)
         ).CROSS_JOIN(
-            SELECT(ALL).FROM(table_name).sql() AS alias_b
+            SELECT(ALL).FROM(table_name).subQuery() AS alias_b
         ).WHERE(table_name EQ 1)
             .sql()
 

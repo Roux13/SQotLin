@@ -11,4 +11,6 @@ class OrderBy(private val query: SelectQuery, vararg orderingTerms: String): ISe
     }
 
     override fun sql(): String = query.sql()
+    override fun subQuery(): String = query.subQuery()
+    override fun toString() = sql()
 }
