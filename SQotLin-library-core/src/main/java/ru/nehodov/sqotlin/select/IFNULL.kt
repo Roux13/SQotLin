@@ -27,7 +27,7 @@ class IFNULL(
 
     override fun toString(): String {
         return """
-            |$IFNULL($checked, ${if (default.isEmpty()) EMPTY else default}
+            |$IFNULL($checked, ${if (default.isEmpty()) EMPTY else default})
         """.trimMargin("|")
     }
 

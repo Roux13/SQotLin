@@ -10,7 +10,7 @@ class OrderBy(private val query: SelectQuery, vararg orderingTerms: String): ISe
         return Limit(query, limit)
     }
 
-    override fun sql(): String = query.sql()
+    override fun query(): String = query.sql()
     override fun subQuery(): String = query.subQuery()
-    override fun toString() = sql()
+    override fun toString() = query()
 }

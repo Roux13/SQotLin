@@ -29,7 +29,7 @@ class DemoTest {
             column_a AS "a",
             column_b,
         ).WHERE(column_a EQ 5)
-            .sql()
+            .query()
 
         SELECT(
             SUM(column_a) AS "sum",
@@ -39,7 +39,7 @@ class DemoTest {
         ).FROM(
             SELECT(ALL).FROM(table_name).subQuery()
         ).WHERE(column_a EQ 5)
-            .sql()
+            .query()
 
         val SELECT_ALL_FROM = SELECT(ALL).FROM(table_name).subQuery()
 
@@ -59,7 +59,7 @@ class DemoTest {
         ).CROSS_JOIN(
             SELECT(ALL).FROM(table_name).subQuery() AS alias_b
         ).WHERE(table_name EQ 1)
-            .sql()
+            .query()
 
 
         SELECT(
@@ -84,7 +84,7 @@ class DemoTest {
         ).LEFT_JOIN(
             table_name ON (column_a EQ column_b)
         ).CROSS_JOIN(
-            SELECT(ALL).FROM(table_name).sql() AS alias_b
+            SELECT(ALL).FROM(table_name).subQuery() AS alias_b
         ).WHERE(
             table_name EQ 1
         ).GROUP_BY(
@@ -92,7 +92,7 @@ class DemoTest {
         ).ORDER_BY(
             column_a
         ).LIMIT(10).OFFSET(5)
-            .sql()
+            .query()
     }
 
 }

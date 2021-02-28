@@ -18,60 +18,57 @@ class SelectQuery(private val isDistinct: Boolean) {
     private var offset: String? = null
 
     fun sql(): String {
-        val query = StringBuilder(
+        return StringBuilder(
             """
             |$SELECT${if (isDistinct) " $DISTINCT" else ""}
-            |   ${columns ?: ""}
             """
-        )
-        from?.let { query.append("|$from") }
-        joins?.let { query.appendLine().append("|$joins") }
-        where?.let { query.appendLine().append("|$where") }
-        groupBy?.let { query.appendLine().append("|$groupBy") }
-        having?.let { query.appendLine().append("|$having") }
-        orderBy?.let { query.appendLine().append("|$orderBy") }
-        limit?.let { query.appendLine().append("|$limit") }
-        offset?.let { query.append(" $offset") }
-        return query.toString().trimMargin().trim()
+        ).append(build()).toString().trimMargin().trim()
     }
 
     fun subQuery(): String {
-        val query = StringBuilder(
+        val closingParenthesis = """
+            |)"""
+        return StringBuilder(
+            """(
+            |$SELECT${if (isDistinct) " $DISTINCT" else ""}
             """
-            |($SELECT${if (isDistinct) " $DISTINCT" else ""}
-            |   ${columns ?: ""}
-            """
-        )
-        from?.let { query.append("|$from") }
-        joins?.let { query.appendLine().append("|$joins") }
-        where?.let { query.appendLine().append("|$where") }
-        groupBy?.let { query.appendLine().append("|$groupBy") }
-        having?.let { query.appendLine().append("|$having") }
-        orderBy?.let { query.appendLine().append("|$orderBy") }
-        limit?.let { query.appendLine().append("|$limit") }
+        ).append(build())
+            .append(closingParenthesis).toString()
+    }
+
+    private fun build(): StringBuilder {
+        val query = StringBuilder()
+        columns?.let { query.append("$columns") }
+        from?.let { query.append("$from") }
+        joins?.let { query.append("$joins") }
+        where?.let { query.append("$where") }
+        groupBy?.let { query.append("$groupBy") }
+        having?.let { query.append("$having") }
+        orderBy?.let { query.append("$orderBy") }
+        limit?.let { query.append("$limit") }
         offset?.let { query.append(" $offset") }
-        query.appendLine().append("|)")
-        return query.toString().trimMargin().trim()
+        return query
     }
 
     fun setColumns(vararg columns: String) {
-        this.columns = columns.joinToString(",\n   ")
+        val _columns = StringBuilder()
+        columns.forEach { column ->
+            val _column = StringBuilder()
+            column.trimMargin().split("\n").forEach{ line ->
+                _column.append("|   $line\n")
+            }
+            _columns.append(_column.trimEnd()).append(",\n")
+        }
+        this.columns = _columns.toString().trimEnd().trimEnd(',').trimEnd()
+//        this.columns = columns.joinToString(prefix = "", separator = ",\n") { "|   ${it.trimMargin()}" }
     }
 
     fun setTables(vararg tables: String) {
-        val _tables = """
-            |${tables.joinToString(",\n\t")}
-        """.trimMargin()
-//        val fromBuilder = StringBuilder(
-//            """
-//            |$FROM
-//            |   $_tables
-//        """
-//        )
+        val _tables = tables.joinToString(prefix = "\n", separator = ",\n", postfix = "") {
+            ("|   $it")
+        }
         from = """
-            |$FROM
-            |   $_tables
-        """.trimMargin()
+            |$FROM${_tables.trimEnd()}"""
     }
 
     fun addJoin(join: String) {
@@ -81,29 +78,23 @@ class SelectQuery(private val isDistinct: Boolean) {
     fun addWhere(rowFilter: String) {
         where = """
             |$WHERE
-            |   $rowFilter
-        """.trimMargin()
+            |   $rowFilter"""
     }
 
     fun addGroupBy(vararg expr: String) {
-        groupBy = """
-            |$GROUP_BY
-            |   ${expr.joinToString(",\n   ")}
-            """.trimMargin()
+        groupBy = """|$GROUP_BY
+                     |   ${expr.joinToString(",\n   ")}"""
     }
 
     fun addHaving(expr: String) {
-        having = """
-            |$HAVING
-            |   $expr
-        """.trimMargin()
+        having = """|$HAVING
+                    |   $expr"""
     }
 
     fun addOrderBy(vararg orderingTerms: String) {
         orderBy = """
             |$ORDER_BY 
-            |   ${orderingTerms.joinToString(",\n   ")}
-        """.trimMargin()
+            |   ${orderingTerms.joinToString(",\n   ")}"""
     }
 
     fun addLimit(limit: Int) {

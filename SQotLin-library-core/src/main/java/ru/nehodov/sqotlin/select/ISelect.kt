@@ -2,7 +2,7 @@ package ru.nehodov.sqotlin.select
 
 interface ISelect {
 
-    fun sql(): String
+    fun query(): String
 
     fun subQuery(): String
 }

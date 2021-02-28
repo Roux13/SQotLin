@@ -2,7 +2,7 @@ package ru.nehodov.sqotlin.select
 
 class From(private val query: SelectQuery, vararg tableList: String) : ISelect {
 
-    constructor(query: SelectQuery, subQuery: ISelect) : this(query, "|    (${subQuery.sql()})")
+    constructor(query: SelectQuery, subQuery: ISelect) : this(query, subQuery.subQuery())
 
     init {
         query.setTables(*tableList)
@@ -36,7 +36,7 @@ class From(private val query: SelectQuery, vararg tableList: String) : ISelect {
         return Limit(query, limit)
     }
 
-    override fun sql(): String = query.sql()
+    override fun query(): String = query.sql()
     override fun subQuery(): String = query.subQuery()
-    override fun toString() = sql()
+    override fun toString() = query()
 }

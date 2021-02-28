@@ -10,7 +10,7 @@ class Limit(private val query: SelectQuery, limit: Int): ISelect {
         return Offset(query, offset)
     }
 
-    override fun sql(): String = query.sql()
+    override fun query(): String = query.sql()
     override fun subQuery(): String = query.subQuery()
-    override fun toString() = sql()
+    override fun toString() = query()
 }

@@ -26,7 +26,7 @@ open class Join(private val query: SelectQuery, joinType: String, table: String)
         return GroupBy(query, *groupClause)
     }
 
-    override fun sql(): String = query.sql()
+    override fun query(): String = query.sql()
     override fun subQuery(): String = query.subQuery()
-    override fun toString() = sql()
+    override fun toString() = query()
 }

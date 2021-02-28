@@ -24,7 +24,7 @@ class SELECT_Test {
         val actual =
                 SELECT(
                         "a + a"
-                ).sql()
+                ).query()
 
         assertEquals(expect, actual)
     }
@@ -39,7 +39,7 @@ class SELECT_Test {
         val actual =
                 SELECT_DISTINCT(
                         "a + a"
-                ).sql()
+                ).query()
 
         assertEquals(expect, actual)
     }
@@ -58,7 +58,7 @@ class SELECT_Test {
                         column_a
                 ).FROM(
                         table_name
-                ).sql()
+                ).query()
 
         assertEquals(expect, actual)
     }
@@ -73,7 +73,7 @@ class SELECT_Test {
         val actual =
                 SELECT_DISTINCT(
                         column_a
-                ).sql()
+                ).query()
 
         assertEquals(expect, actual)
     }
@@ -94,7 +94,7 @@ class SELECT_Test {
                         column_b
                 ).FROM(
                         table_name
-                ).sql()
+                ).query()
 
         assertEquals(expect, actual)
     }
@@ -115,7 +115,7 @@ class SELECT_Test {
                         column_b
                 ).FROM(
                         table_name
-                ).sql()
+                ).query()
 
         assertEquals(expect, actual)
     }
@@ -138,7 +138,7 @@ class SELECT_Test {
                         table_name
                 ).WHERE(
                         column_a EQ 3
-                ).sql()
+                ).query()
 
         assertEquals(expect, actual)
     }
@@ -157,7 +157,7 @@ class SELECT_Test {
                         column_a AS "alias_a"
                 ).FROM(
                         table_name
-                ).sql()
+                ).query()
 
         assertEquals(expect, actual)
     }
@@ -176,7 +176,7 @@ class SELECT_Test {
                         column_a AS alias_a
                 ).FROM(
                         table_name
-                ).sql()
+                ).query()
 
         assertEquals(expect, actual)
     }
@@ -197,7 +197,7 @@ class SELECT_Test {
                         column_b
                 ).FROM(
                         table_name
-                ).sql()
+                ).query()
 
         assertEquals(expect, actual)
     }
@@ -218,7 +218,7 @@ class SELECT_Test {
                         column_b AS alias_b
                 ).FROM(
                         table_name
-                ).sql()
+                ).query()
 
         assertEquals(expect, actual)
     }
@@ -239,7 +239,7 @@ class SELECT_Test {
                         column_b AS alias_b
                 ).FROM(
                         table_name AS table_alias
-                ).sql()
+                ).query()
 
         assertEquals(expect, actual)
     }
@@ -258,7 +258,7 @@ class SELECT_Test {
                         ALL
                 ).FROM(
                         table_name
-                ).sql()
+                ).query()
 
         assertEquals(expect, actual)
     }
@@ -277,7 +277,7 @@ class SELECT_Test {
                         "0" AS alias_a
                 ).FROM(
                         table_name
-                ).sql()
+                ).query()
 
         assertEquals(expect, actual)
     }
@@ -292,7 +292,7 @@ class SELECT_Test {
         val actual =
                 SELECT(
                     AVG(column_a).AS_IS()
-                ).sql()
+                ).query()
 
         assertEquals(expect, actual)
     }
@@ -307,7 +307,7 @@ class SELECT_Test {
         val actual =
                 SELECT(
                         AVG(column_a) AS alias_a
-                ).sql()
+                ).query()
 
         assertEquals(expect, actual)
     }
@@ -330,7 +330,7 @@ class SELECT_Test {
                 table_name
             ).ORDER_BY(
                 column_a
-            ).sql()
+            ).query()
 
         assertEquals(expext, actual)
     }
@@ -353,7 +353,7 @@ class SELECT_Test {
                 table_name
             ).ORDER_BY(
                 column_a.ASC()
-            ).sql()
+            ).query()
 
         assertEquals(expext, actual)
     }
@@ -376,7 +376,7 @@ class SELECT_Test {
                 table_name
             ).ORDER_BY(
                 column_a.DESC()
-            ).sql()
+            ).query()
 
         assertEquals(expext, actual)
     }
@@ -401,7 +401,7 @@ class SELECT_Test {
             ).ORDER_BY(
                 column_a.DESC(),
                 column_b.ASC()
-            ).sql()
+            ).query()
 
         assertEquals(expext, actual)
     }
