@@ -1,8 +1,7 @@
-package ru.nehodov.sqotlin
+package ru.nehodov.sqotlin.extensions
 
 import org.junit.Assert
 import org.junit.Test
-import ru.nehodov.sqotlin.extensions.AS
 
 class AsStringExtTest {
 

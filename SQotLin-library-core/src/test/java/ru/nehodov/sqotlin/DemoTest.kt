@@ -4,7 +4,10 @@ import org.junit.Test
 import ru.nehodov.sqotlin.SQLiteConst.ALL
 import ru.nehodov.sqotlin.SQLiteConst.EMPTY
 import ru.nehodov.sqotlin.aggregateFunctions.*
-import ru.nehodov.sqotlin.extensions.*
+import ru.nehodov.sqotlin.extensions.AS
+import ru.nehodov.sqotlin.extensions.EQ
+import ru.nehodov.sqotlin.extensions.NEQ
+import ru.nehodov.sqotlin.extensions.UNION_ALL
 import ru.nehodov.sqotlin.select.COALESCE
 import ru.nehodov.sqotlin.select.IFNULL
 import ru.nehodov.sqotlin.select.SELECT
@@ -50,14 +53,16 @@ class DemoTest {
             column_a AS "a",
             column_b,
             SELECT_ALL_FROM AS "alias3"
-        ).INNER_JOIN(
-            table_name ON column_a EQ column_b
-        ).INNER_JOIN(
-            table_name ON column_b NEQ column_a
-        ).LEFT_JOIN(
-            table_name ON (column_a EQ column_b)
+        ).INNER_JOIN(table_name).ON(
+            column_a EQ column_b
+        ).INNER_JOIN(table_name).ON(
+            column_b NEQ column_a
+        ).LEFT_JOIN(table_name).ON(
+            column_a EQ column_b
         ).CROSS_JOIN(
             SELECT(ALL).FROM(table_name).subQuery() AS alias_b
+        ).ON(
+            column_a EQ column_b
         ).WHERE(table_name EQ 1)
             .query()
 
@@ -77,14 +82,14 @@ class DemoTest {
             SELECT(ALL).FROM(table_name)
                     UNION_ALL
                     SELECT(column_a).FROM(table_name)
-        ).INNER_JOIN(
-            table_name ON column_a EQ column_b
-        ).INNER_JOIN(
-            table_name ON column_b NEQ column_a
-        ).LEFT_JOIN(
-            table_name ON (column_a EQ column_b)
-        ).CROSS_JOIN(
-            SELECT(ALL).FROM(table_name).subQuery() AS alias_b
+        ).INNER_JOIN(table_name).ON(
+            column_a EQ column_b
+        ).INNER_JOIN(table_name).ON(
+            column_b NEQ column_a
+        ).LEFT_JOIN(table_name).ON(
+            column_a EQ column_b
+        ).CROSS_JOIN(SELECT(ALL).FROM(table_name).subQuery() AS alias_b).ON(
+            column_a EQ column_b
         ).WHERE(
             table_name EQ 1
         ).GROUP_BY(

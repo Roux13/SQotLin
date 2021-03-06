@@ -1,21 +1,20 @@
-package ru.nehodov.sqotlin
+package ru.nehodov.sqotlin.extensions
 
 import org.junit.Assert
 import org.junit.Test
-import ru.nehodov.sqotlin.extensions.LESS
 
-class LessStringExtTest {
+class LessOrEqStringExtTest {
 
     val column_a = "column_a"
     val column_b = "column_b"
 
     @Test
-    fun `LESS when b is String then a = b`() {
+    fun `LESSorEQ when b is String then a = b`() {
         val expect = """
-            |$column_a < $column_b
+            |$column_a <= $column_b
         """.trimMargin("|")
 
-        val actual = column_a LESS column_b
+        val actual = column_a LESSorEQ column_b
 
         Assert.assertEquals(expect, actual)
     }
@@ -24,58 +23,58 @@ class LessStringExtTest {
     fun `LESS when b is Int then a = intValue`() {
         val intValue = 5
         val expect = """
-            |$column_a < $intValue
+            |$column_a <= $intValue
         """.trimMargin("|")
 
-        val actual = column_a LESS intValue
+        val actual = column_a LESSorEQ intValue
 
         Assert.assertEquals(expect, actual)
     }
 
     @Test
-    fun `LESS when b is Byte then a = byteValue`() {
+    fun `LESSorEQ when b is Byte then a = byteValue`() {
         val byteValue: Byte = 1
         val expect = """
-            |$column_a < $byteValue
+            |$column_a <= $byteValue
         """.trimMargin("|")
 
-        val actual = column_a LESS byteValue
+        val actual = column_a LESSorEQ byteValue
 
         Assert.assertEquals(expect, actual)
     }
 
     @Test
-    fun `LESS when b is Long then a = longValue`() {
+    fun `LESSorEQ when b is Long then a = longValue`() {
         val longValue = 1L
         val expect = """
-            |$column_a < $longValue
+            |$column_a <= $longValue
         """.trimMargin("|")
 
-        val actual = column_a LESS longValue
+        val actual = column_a LESSorEQ longValue
 
         Assert.assertEquals(expect, actual)
     }
 
     @Test
-    fun `LESS when b is Float then a = floatValue`() {
+    fun `LESSorEQ when b is Float then a = floatValue`() {
         val floatValue = 1f
         val expect = """
-            |$column_a < $floatValue
+            |$column_a <= $floatValue
         """.trimMargin("|")
 
-        val actual = column_a LESS floatValue
+        val actual = column_a LESSorEQ floatValue
 
         Assert.assertEquals(expect, actual)
     }
 
     @Test
-    fun `LESS when b is Double then a = doubleValue`() {
+    fun `LESSorEQ when b is Double then a = doubleValue`() {
         val doubleValue = 1.0
         val expect = """
-            |$column_a < $doubleValue
+            |$column_a <= $doubleValue
         """.trimMargin("|")
 
-        val actual = column_a LESS doubleValue
+        val actual = column_a LESSorEQ doubleValue
 
         Assert.assertEquals(expect, actual)
     }

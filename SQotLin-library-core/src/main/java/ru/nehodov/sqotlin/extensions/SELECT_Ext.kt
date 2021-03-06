@@ -9,3 +9,11 @@ infix fun ISelect.UNION_ALL(other: ISelect): String {
         |${other.subQuery()}
     """.trimMargin()
 }
+
+infix fun String.UNION_ALL(other: ISelect): String {
+    return """
+        |${this}
+        |UNION ALL
+        |${other.subQuery()}
+    """.trimMargin()
+}

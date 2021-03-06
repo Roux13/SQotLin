@@ -23,10 +23,6 @@ infix fun String.OR(right: String): String {
     return "$left OR $right"
 }
 
-infix fun String.ON(clause: String): String {
-    return "$this ON $clause"
-}
-
 fun String.IN(vararg valueArgs: String): String {
     var values = valueArgs[0]
     for (i in 1..valueArgs.lastIndex) {

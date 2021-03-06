@@ -28,6 +28,18 @@ class From(private val query: SelectQuery, vararg tableList: String) : ISelect {
         return LeftJoin(query, table)
     }
 
+    fun INNER_JOIN(subQuery: ISelect): Join {
+        return InnerJoin(query, subQuery.subQuery())
+    }
+
+    fun CROSS_JOIN(subQuery: ISelect): Join {
+        return CrossJoin(query, subQuery.subQuery())
+    }
+
+    fun LEFT_JOIN(subQuery: ISelect): Join {
+        return LeftJoin(query, subQuery.subQuery())
+    }
+
     fun ORDER_BY(vararg orderingTerms: String): OrderBy {
         return OrderBy(query, *orderingTerms)
     }

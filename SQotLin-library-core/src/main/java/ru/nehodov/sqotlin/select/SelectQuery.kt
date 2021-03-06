@@ -4,12 +4,7 @@ class SelectQuery(private val isDistinct: Boolean) {
 
     private var columns: String? = ""
     private var from: String? = null
-    private val _joins: MutableList<String?> = mutableListOf()
-    private val joins: String?
-        get() = if (_joins.isNotEmpty()) _joins.joinToString(
-            prefix = "",
-            separator = "\n"
-        ) else null
+    private var joins: MutableList<JoinContainer>? = null
     private var where: String? = null
     private var orderBy: String? = null
     private var groupBy: String? = null
@@ -40,7 +35,7 @@ class SelectQuery(private val isDistinct: Boolean) {
         val query = StringBuilder()
         columns?.let { query.append("$columns") }
         from?.let { query.append("$from") }
-        joins?.let { query.append("$joins") }
+        joins?.let { query.append(appendJoins()) }
         where?.let { query.append("$where") }
         groupBy?.let { query.append("$groupBy") }
         having?.let { query.append("$having") }
@@ -53,26 +48,58 @@ class SelectQuery(private val isDistinct: Boolean) {
     fun setColumns(vararg columns: String) {
         val _columns = StringBuilder()
         columns.forEach { column ->
-            val _column = StringBuilder()
-            column.trimMargin().split("\n").forEach{ line ->
-                _column.append("|   $line\n")
-            }
-            _columns.append(_column.trimEnd()).append(",\n")
+            val currentColumn = StringBuilder()
+            column.trimMargin()
+                .split("\n")
+                .forEach { line ->
+                    currentColumn.append("|   $line\n")
+                }
+            _columns.append(currentColumn.trimEnd()).append(",\n")
         }
         this.columns = _columns.toString().trimEnd().trimEnd(',').trimEnd()
-//        this.columns = columns.joinToString(prefix = "", separator = ",\n") { "|   ${it.trimMargin()}" }
     }
 
     fun setTables(vararg tables: String) {
-        val _tables = tables.joinToString(prefix = "\n", separator = ",\n", postfix = "") {
-            ("|   $it")
+        val _from = StringBuilder(
+            """
+            |$FROM
+            """
+        )
+        tables.forEach { tables ->
+            val currentTable = StringBuilder()
+            tables.trimMargin()
+                .split("\n")
+                .forEach { line ->
+                    currentTable.append("|   $line\n")
+                }
+            _from.append(currentTable.trimEnd()).append(",\n")
         }
-        from = """
-            |$FROM${_tables.trimEnd()}"""
+        from = _from.toString().trimEnd().trimEnd(',').trimEnd()
     }
 
-    fun addJoin(join: String) {
-        _joins.add(join)
+    fun addJoin(joinContainer: JoinContainer) {
+        if (joins == null) {
+            joins = mutableListOf()
+        }
+        joins?.add(joinContainer)
+    }
+
+    private fun appendJoins(): String {
+        val _joins = StringBuilder()
+        joins?.forEach { joinContainer ->
+            val currentTable = StringBuilder("\n|${joinContainer.joinType}")
+            val lines = joinContainer.table.trimMargin().split("\n")
+            for (i in lines.indices) {
+                if (i == 0) {
+                    currentTable.append(" ${lines[i]}\n")
+                } else {
+                    currentTable.append("|   ${lines[i]}\n")
+                }
+            }
+            _joins.append("$currentTable")
+                .append("|   ON ${joinContainer.joinCondition}")
+        }
+        return _joins.toString().trimEnd()
     }
 
     fun addWhere(rowFilter: String) {

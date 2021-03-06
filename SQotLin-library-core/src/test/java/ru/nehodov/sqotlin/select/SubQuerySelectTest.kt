@@ -3,17 +3,13 @@ package ru.nehodov.sqotlin.select
 import org.junit.Assert
 import org.junit.Test
 import ru.nehodov.sqotlin.SQLiteConst.ALL
+import ru.nehodov.sqotlin.TestDbSchemaConst.column_a
+import ru.nehodov.sqotlin.TestDbSchemaConst.column_b
+import ru.nehodov.sqotlin.TestDbSchemaConst.column_c
+import ru.nehodov.sqotlin.TestDbSchemaConst.first_table
 import ru.nehodov.sqotlin.extensions.AS
 
-class SubquerySELECT_Test {
-
-    private val table_name = "table_name"
-    private val column_a = "column_a"
-    private val column_b = "column_b"
-    private val column_c = "column_c"
-    private val table_alias = "table_alias"
-    private val alias_a = "alias_a"
-    private val alias_b = "alias_b"
+class SubQuerySelectTest {
 
     @Test
     fun `when SELECT with subQuery SELECT All`() {
@@ -133,7 +129,7 @@ class SubquerySELECT_Test {
             |   SELECT
             |      $column_a
             |   FROM
-            |      $table_name
+            |      $first_table
             |   )
         """.trimMargin("|")
 
@@ -141,7 +137,7 @@ class SubquerySELECT_Test {
             SELECT(
                 SELECT(
                     column_a
-                ).FROM(table_name
+                ).FROM(first_table
                 ).subQuery()
             ).query()
 
@@ -157,7 +153,7 @@ class SubquerySELECT_Test {
             |   SELECT
             |      $column_a
             |   FROM
-            |      $table_name
+            |      $first_table
             |   )
         """.trimMargin("|")
 
@@ -166,7 +162,7 @@ class SubquerySELECT_Test {
                 column_b,
                 SELECT(
                     column_a
-                ).FROM(table_name
+                ).FROM(first_table
                 ).subQuery()
             ).query()
 
