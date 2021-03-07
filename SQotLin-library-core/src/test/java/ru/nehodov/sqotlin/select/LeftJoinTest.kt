@@ -49,7 +49,8 @@ class LeftJoinTest {
             |FROM
             |   $first_table
             |LEFT JOIN $second_table
-            |   ON $column_a = $column_b AND $column_b = $column_c
+            |   ON $column_a = $column_b
+            |   AND $column_b = $column_c
             """.trimMargin("|")
 
         val actual =
@@ -73,7 +74,8 @@ class LeftJoinTest {
             |FROM
             |   $first_table
             |LEFT JOIN $second_table
-            |   ON $column_a = $column_b AND $column_b = $column_c OR $column_a = $column_c
+            |   ON $column_a = $column_b
+            |   AND ($column_b = $column_c OR $column_a = $column_c)
             """.trimMargin("|")
 
         val actual =
@@ -83,7 +85,7 @@ class LeftJoinTest {
                 first_table
             ).LEFT_JOIN(second_table).ON(
                 column_a EQ column_b
-                        AND (column_b EQ column_c OR column_a EQ column_c)
+                        AND ((column_b EQ column_c) OR (column_a EQ column_c))
             ).query()
 
         Assert.assertEquals(expect, actual)
@@ -120,7 +122,8 @@ class LeftJoinTest {
             |FROM
             |   $first_table AS $first_table_alias
             |LEFT JOIN $second_table AS $second_table_alias
-            |   ON $column_a = $column_b AND $column_b = $column_c OR $column_a = $column_c
+            |   ON $column_a = $column_b
+            |   AND ($column_b = $column_c OR $column_a = $column_c)
             """.trimMargin("|")
 
         val actual =
@@ -128,9 +131,11 @@ class LeftJoinTest {
                 column_a
             ).FROM(
                 first_table AS first_table_alias
-            ).LEFT_JOIN(second_table AS second_table_alias).ON(
+            ).LEFT_JOIN(
+                second_table AS second_table_alias
+            ).ON(
                 column_a EQ column_b
-                        AND (column_b EQ column_c OR column_a EQ column_c)
+                        AND ((column_b EQ column_c) OR (column_a EQ column_c))
             ).query()
 
         Assert.assertEquals(expect, actual)
@@ -183,7 +188,8 @@ class LeftJoinTest {
             |   FROM
             |      $second_table
             |   ) AS $second_table_alias
-            |   ON $column_a = $column_b AND $column_b = $column_c OR $column_a = $column_c
+            |   ON $column_a = $column_b
+            |   AND ($column_b = $column_c OR $column_a = $column_c)
             """.trimMargin("|")
 
         val subQuery = SELECT(
@@ -199,7 +205,7 @@ class LeftJoinTest {
                 first_table AS first_table_alias
             ).LEFT_JOIN(subQuery AS second_table_alias).ON(
                 column_a EQ column_b
-                        AND (column_b EQ column_c OR column_a EQ column_c)
+                        AND ((column_b EQ column_c) OR (column_a EQ column_c))
             ).query()
 
         Assert.assertEquals(expect, actual)

@@ -48,13 +48,16 @@ class SelectQuery(private val isDistinct: Boolean) {
     fun setColumns(vararg columns: String) {
         val _columns = StringBuilder()
         columns.forEach { column ->
-            val currentColumn = StringBuilder()
-            column.trimMargin()
-                .split("\n")
-                .forEach { line ->
-                    currentColumn.append("|   $line\n")
-                }
-            _columns.append(currentColumn.trimEnd()).append(",\n")
+            if (column.isNotEmpty()) {
+                val currentColumn = StringBuilder()
+                column.trimMargin()
+                    .split("\n")
+                    .forEach { line ->
+                        currentColumn.append("|   $line\n")
+                    }
+                _columns.append(currentColumn.trimEnd()).append(",\n")
+            }
+
         }
         this.columns = _columns.toString().trimEnd().trimEnd(',').trimEnd()
     }
@@ -65,14 +68,16 @@ class SelectQuery(private val isDistinct: Boolean) {
             |$FROM
             """
         )
-        tables.forEach { tables ->
-            val currentTable = StringBuilder()
-            tables.trimMargin()
-                .split("\n")
-                .forEach { line ->
-                    currentTable.append("|   $line\n")
-                }
-            _from.append(currentTable.trimEnd()).append(",\n")
+        tables.forEach { table ->
+            if (table.isNotEmpty()) {
+                val currentTable = StringBuilder()
+                table.trimMargin()
+                    .split("\n")
+                    .forEach { line ->
+                        currentTable.append("|   $line\n")
+                    }
+                _from.append(currentTable.trimEnd()).append(",\n")
+            }
         }
         from = _from.toString().trimEnd().trimEnd(',').trimEnd()
     }
@@ -108,14 +113,21 @@ class SelectQuery(private val isDistinct: Boolean) {
             |   $rowFilter"""
     }
 
-    fun addGroupBy(vararg expr: String) {
-        groupBy = """|$GROUP_BY
-                     |   ${expr.joinToString(",\n   ")}"""
+    fun addGroupBy(vararg columns: String) {
+        val _groupBy = StringBuilder("\n|$GROUP_BY\n")
+        columns.forEach { column ->
+            if (column.isNotEmpty()) {
+                _groupBy.append("|   $column,\n")
+            }
+        }
+        groupBy = _groupBy.toString().trimEnd().trimEnd(',').trimEnd()
     }
 
     fun addHaving(expr: String) {
-        having = """|$HAVING
-                    |   $expr"""
+        having = """
+            |$HAVING
+            |   $expr
+        """
     }
 
     fun addOrderBy(vararg orderingTerms: String) {
@@ -124,8 +136,10 @@ class SelectQuery(private val isDistinct: Boolean) {
             |   ${orderingTerms.joinToString(",\n   ")}"""
     }
 
-    fun addLimit(limit: Int) {
-        this.limit = "$LIMIT $limit"
+    fun addLimit(rowCount: Int) {
+        this.limit = """|
+            |$LIMIT $rowCount
+        """.trimMargin()
     }
 
     fun addOffset(offset: Int) {

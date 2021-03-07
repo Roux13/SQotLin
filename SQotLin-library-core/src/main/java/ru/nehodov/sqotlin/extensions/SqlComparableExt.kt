@@ -37,13 +37,13 @@ infix fun SqlComparable.LESS(right: Any): String {
     return this.LESS(right.toString())
 }
 
-infix fun SqlComparable.GREAT(right: String): String {
+infix fun SqlComparable.GREATER(right: String): String {
     val operator = ">"
     return comparableComparisonOperation(this.toString(), operator, right)
 }
 
-infix fun SqlComparable.GREAT(right: Any): String {
-    return this.GREAT(right.toString())
+infix fun SqlComparable.GREATER(right: Any): String {
+    return this.GREATER(right.toString())
 }
 
 infix fun SqlComparable.LESSorEQ(right: String): String {

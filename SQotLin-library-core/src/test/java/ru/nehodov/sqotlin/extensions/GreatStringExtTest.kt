@@ -14,7 +14,7 @@ class GreatStringExtTest {
             |$column_a > $column_b
         """.trimMargin("|")
 
-        val actual = column_a GREAT column_b
+        val actual = column_a GREATER column_b
 
         Assert.assertEquals(expect, actual)
     }
@@ -26,7 +26,7 @@ class GreatStringExtTest {
             |$column_a > $intValue
         """.trimMargin("|")
 
-        val actual = column_a GREAT intValue
+        val actual = column_a GREATER intValue
 
         Assert.assertEquals(expect, actual)
     }
@@ -38,7 +38,7 @@ class GreatStringExtTest {
             |$column_a > $byteValue
         """.trimMargin("|")
 
-        val actual = column_a GREAT byteValue
+        val actual = column_a GREATER byteValue
 
         Assert.assertEquals(expect, actual)
     }
@@ -50,7 +50,7 @@ class GreatStringExtTest {
             |$column_a > $longValue
         """.trimMargin("|")
 
-        val actual = column_a GREAT longValue
+        val actual = column_a GREATER longValue
 
         Assert.assertEquals(expect, actual)
     }
@@ -62,7 +62,7 @@ class GreatStringExtTest {
             |$column_a > $floatValue
         """.trimMargin("|")
 
-        val actual = column_a GREAT floatValue
+        val actual = column_a GREATER floatValue
 
         Assert.assertEquals(expect, actual)
     }
@@ -74,7 +74,7 @@ class GreatStringExtTest {
             |$column_a > $doubleValue
         """.trimMargin("|")
 
-        val actual = column_a GREAT doubleValue
+        val actual = column_a GREATER doubleValue
 
         Assert.assertEquals(expect, actual)
     }

@@ -9,7 +9,10 @@ infix fun String.AS(alias: String): String {
 
 infix fun String.AND(right: String): String {
     val left = this
-    return """
+    return if (right.isEmpty()) {
+        this
+    } else
+        """
        |$left
        |   AND $right
     """.trimMargin()
@@ -17,7 +20,7 @@ infix fun String.AND(right: String): String {
 
 infix fun String.OR(right: String): String {
     val left = this
-    return "$left OR $right"
+    return "($left OR $right)"
 }
 
 fun String.IN(vararg valueArgs: String): String {
@@ -93,13 +96,13 @@ infix fun String.LESS(right: Any): String {
     return this.LESS(right.toString())
 }
 
-infix fun String.GREAT(right: String): String {
+infix fun String.GREATER(right: String): String {
     val operator = ">"
     return comparisonOperation(this, operator, right)
 }
 
-infix fun String.GREAT(right: Any): String {
-    return this.GREAT(right.toString())
+infix fun String.GREATER(right: Any): String {
+    return this.GREATER(right.toString())
 }
 
 infix fun String.LESSorEQ(right: String): String {

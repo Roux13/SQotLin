@@ -2,6 +2,7 @@ package ru.nehodov.sqotlin.select
 
 import org.junit.Assert
 import org.junit.Test
+import ru.nehodov.sqotlin.SQLiteConst
 import ru.nehodov.sqotlin.TestDbSchemaConst.alias_a
 import ru.nehodov.sqotlin.TestDbSchemaConst.alias_b
 import ru.nehodov.sqotlin.TestDbSchemaConst.column_a
@@ -11,6 +12,25 @@ import ru.nehodov.sqotlin.TestDbSchemaConst.first_table_alias
 import ru.nehodov.sqotlin.extensions.AS
 
 class FromTest {
+
+    @Test
+    fun `when SELECT all columns`() {
+        val expect = """
+            |SELECT
+            |   *
+            |FROM
+            |   $first_table
+        """.trimMargin("|")
+
+        val actual =
+            SELECT(
+                SQLiteConst.ALL
+            ).FROM(
+                first_table
+            ).query()
+
+        Assert.assertEquals(expect, actual)
+    }
 
     @Test
     fun `when SELECT one column FROM one table`() {

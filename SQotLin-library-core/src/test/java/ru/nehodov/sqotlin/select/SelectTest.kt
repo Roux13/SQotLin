@@ -2,16 +2,14 @@ package ru.nehodov.sqotlin.select
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import ru.nehodov.sqotlin.SQLiteConst.ALL
 import ru.nehodov.sqotlin.TestDbSchemaConst.alias_a
+import ru.nehodov.sqotlin.TestDbSchemaConst.alias_b
 import ru.nehodov.sqotlin.TestDbSchemaConst.column_a
 import ru.nehodov.sqotlin.TestDbSchemaConst.column_b
-import ru.nehodov.sqotlin.TestDbSchemaConst.first_table
+import ru.nehodov.sqotlin.TestDbSchemaConst.column_c
 import ru.nehodov.sqotlin.aggregateFunctions.AVG
 import ru.nehodov.sqotlin.extensions.AS
-import ru.nehodov.sqotlin.extensions.ASC
 import ru.nehodov.sqotlin.extensions.AS_IS
-import ru.nehodov.sqotlin.extensions.DESC
 
 class SelectTest {
 
@@ -46,39 +44,136 @@ class SelectTest {
     }
 
     @Test
-    fun `when SELECT all columns`() {
+    fun `when SELECT any string AS alias`() {
         val expect = """
             |SELECT
-            |   *
-            |FROM
-            |   $first_table
+            |   0 AS $alias_a
         """.trimMargin("|")
 
         val actual =
                 SELECT(
-                        ALL
-                ).FROM(
-                        first_table
+                        "0" AS alias_a
                 ).query()
 
         assertEquals(expect, actual)
     }
 
     @Test
-    fun `when SELECT any string AS alias`() {
+    fun `when SELECT 1 column`() {
         val expect = """
             |SELECT
-            |   0 AS $alias_a
-            |FROM
-            |   $first_table
+            |   $column_a
         """.trimMargin("|")
 
         val actual =
-                SELECT(
-                        "0" AS alias_a
-                ).FROM(
-                        first_table
-                ).query()
+            SELECT(
+                column_a
+            ).query()
+
+        assertEquals(expect, actual)
+    }
+
+    @Test
+    fun `when SELECT 2 columns`() {
+        val expect = """
+            |SELECT
+            |   $column_a,
+            |   $column_b
+        """.trimMargin("|")
+
+        val actual =
+            SELECT(
+                column_a,
+                column_b
+            ).query()
+
+        assertEquals(expect, actual)
+    }
+
+    @Test
+    fun `when SELECT 2 columns & one of them with alias`() {
+        val expect = """
+            |SELECT
+            |   $column_a AS $alias_a,
+            |   $column_b
+        """.trimMargin("|")
+
+        val actual =
+            SELECT(
+                column_a AS alias_a,
+                column_b
+            ).query()
+
+        assertEquals(expect, actual)
+    }
+
+    @Test
+    fun `when SELECT 2 columns & one of them by condition & condition true`() {
+        val condition = true
+        val expect = """
+            |SELECT
+            |   $column_a,
+            |   $column_b
+        """.trimMargin("|")
+
+        val actual =
+            SELECT(
+                column_a,
+                if(condition) column_b else ""
+            ).query()
+
+        assertEquals(expect, actual)
+    }
+
+    @Test
+    fun `when SELECT 2 columns & one of them by condition & condition false`() {
+        val condition = false
+        val expect = """
+            |SELECT
+            |   $column_a
+        """.trimMargin("|")
+
+        val actual =
+            SELECT(
+                column_a,
+                if(condition) column_b else ""
+            ).query()
+
+        assertEquals(expect, actual)
+    }
+
+    @Test
+    fun `when SELECT 3 columns & one of them by condition & condition false`() {
+        val condition = false
+        val expect = """
+            |SELECT
+            |   $column_a,
+            |   $column_c
+        """.trimMargin("|")
+
+        val actual =
+            SELECT(
+                column_a,
+                if(condition) column_b else "",
+                column_c
+            ).query()
+
+        assertEquals(expect, actual)
+    }
+
+    @Test
+    fun `when SELECT 2 columns & all with aliases`() {
+        val expect = """
+            |SELECT
+            |   $column_a AS $alias_a,
+            |   $column_b AS $alias_b
+        """.trimMargin("|")
+
+        val actual =
+            SELECT(
+                column_a AS alias_a,
+                column_b AS alias_b,
+            ).query()
 
         assertEquals(expect, actual)
     }
@@ -113,97 +208,5 @@ class SelectTest {
         assertEquals(expect, actual)
     }
 
-    @Test
-    fun `when SELECT FROM ORDER BY`() {
-        val expext = """
-            |SELECT
-            |   $column_a
-            |FROM
-            |   $first_table
-            |ORDER BY 
-            |   $column_a
-        """.trimMargin()
 
-        val actual =
-            SELECT(
-                column_a
-            ).FROM(
-                first_table
-            ).ORDER_BY(
-                column_a
-            ).query()
-
-        assertEquals(expext, actual)
-    }
-
-    @Test
-    fun `when SELECT FROM ORDER BY ASC`() {
-        val expext = """
-            |SELECT
-            |   $column_a
-            |FROM
-            |   $first_table
-            |ORDER BY 
-            |   $column_a ASC
-        """.trimMargin()
-
-        val actual =
-            SELECT(
-                column_a
-            ).FROM(
-                first_table
-            ).ORDER_BY(
-                column_a.ASC()
-            ).query()
-
-        assertEquals(expext, actual)
-    }
-
-    @Test
-    fun `when SELECT FROM ORDER BY DESC`() {
-        val expext = """
-            |SELECT
-            |   $column_a
-            |FROM
-            |   $first_table
-            |ORDER BY 
-            |   $column_a DESC
-        """.trimMargin()
-
-        val actual =
-            SELECT(
-                column_a
-            ).FROM(
-                first_table
-            ).ORDER_BY(
-                column_a.DESC()
-            ).query()
-
-        assertEquals(expext, actual)
-    }
-
-    @Test
-    fun `when SELECT FROM ORDER BY column_a DESC & column_b ASC`() {
-        val expext = """
-            |SELECT
-            |   $column_a
-            |FROM
-            |   $first_table
-            |ORDER BY 
-            |   $column_a DESC,
-            |   $column_b ASC
-        """.trimMargin()
-
-        val actual =
-            SELECT(
-                column_a
-            ).FROM(
-                first_table
-            ).ORDER_BY(
-                column_a.DESC(),
-                column_b.ASC()
-            ).query()
-
-        assertEquals(expext, actual)
-    }
 }

@@ -50,7 +50,8 @@ class InnerJoinTest {
             |FROM
             |   $first_table
             |INNER JOIN $second_table
-            |   ON $column_a = $column_b AND $column_b = $column_c
+            |   ON $column_a = $column_b
+            |   AND $column_b = $column_c
             """.trimMargin("|")
 
         val actual =
@@ -74,7 +75,8 @@ class InnerJoinTest {
             |FROM
             |   $first_table
             |INNER JOIN $second_table
-            |   ON $column_a = $column_b AND $column_b = $column_c OR $column_a = $column_c
+            |   ON $column_a = $column_b
+            |   AND ($column_b = $column_c OR $column_a = $column_c)
             """.trimMargin("|")
 
         val actual =
@@ -84,7 +86,7 @@ class InnerJoinTest {
                 first_table
             ).INNER_JOIN(second_table).ON(
                 column_a EQ column_b
-                        AND (column_b EQ column_c OR column_a EQ column_c)
+                        AND ((column_b EQ column_c) OR (column_a EQ column_c))
             ).query()
 
         Assert.assertEquals(expect, actual)
@@ -121,7 +123,8 @@ class InnerJoinTest {
             |FROM
             |   $first_table AS $first_table_alias
             |INNER JOIN $second_table AS $second_table_alias
-            |   ON $column_a = $column_b AND $column_b = $column_c OR $column_a = $column_c
+            |   ON $column_a = $column_b
+            |   AND ($column_b = $column_c OR $column_a = $column_c)
             """.trimMargin("|")
 
         val actual =
@@ -131,7 +134,7 @@ class InnerJoinTest {
                 first_table AS first_table_alias
             ).INNER_JOIN(second_table AS second_table_alias).ON(
                 column_a EQ column_b
-                        AND (column_b EQ column_c OR column_a EQ column_c)
+                        AND ((column_b EQ column_c) OR (column_a EQ column_c))
             ).query()
 
         Assert.assertEquals(expect, actual)
@@ -184,7 +187,8 @@ class InnerJoinTest {
             |   FROM
             |      $second_table
             |   ) AS $second_table_alias
-            |   ON $column_a = $column_b AND $column_b = $column_c OR $column_a = $column_c
+            |   ON $column_a = $column_b
+            |   AND ($column_b = $column_c OR $column_a = $column_c)
             """.trimMargin("|")
 
         val subQuery = SELECT(
@@ -200,7 +204,7 @@ class InnerJoinTest {
                 first_table AS first_table_alias
             ).INNER_JOIN(subQuery AS second_table_alias).ON(
                 column_a EQ column_b
-                        AND (column_b EQ column_c OR column_a EQ column_c)
+                        AND ((column_b EQ column_c) OR (column_a EQ column_c))
             ).query()
 
         Assert.assertEquals(expect, actual)
