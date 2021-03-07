@@ -1,5 +1,7 @@
 package ru.nehodov.sqotlin.extensions
 
+import ru.nehodov.sqotlin.select.ISelect
+
 infix fun String.AS(alias: String): String {
     val as_alias = if (alias.isNotEmpty()) " AS $alias" else ""
     return """
@@ -32,6 +34,22 @@ fun String.IN(vararg valueArgs: String): String {
             """.trimMargin("|")
     }
     return """$this IN ($values)"""
+}
+
+fun String.IN(subQuery: ISelect): String {
+    val _in = StringBuilder("|$this IN ")
+    val inWithSpaceLength = " IN ".length
+    val indent = " ".repeat(this.length + inWithSpaceLength)
+    val subQueryLines = subQuery.subQuery().trimMargin().split("\n")
+    for (i in subQueryLines.indices) {
+        if (i == 0) {
+            _in.append(subQueryLines[i])
+        } else {
+            _in.appendLine().append("|$indent${subQueryLines[i]}")
+        }
+    }
+
+    return _in.toString().trimMargin().trimEnd()
 }
 
 fun String.IN(vararg valueArgs: Any): String {
