@@ -69,6 +69,16 @@ fun String.DESC(): String {
     """.trimMargin()
 }
 
+infix fun String.BETWEEN(low: Any): Between {
+    return Between(value = this, low.toString())
+}
+
+infix fun Between.AND(high: Any): String {
+    return """
+        |$value BETWEEN $low AND $high
+    """.trimMargin()
+}
+
 infix fun String.EQ(right: String): String {
     val operator = "="
     return comparisonOperation(this, operator, right)
