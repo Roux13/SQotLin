@@ -49,4 +49,45 @@ class InTest {
 
         Assert.assertEquals(expect, actual)
     }
+
+    @Test
+    fun `when just NOT IN 1 value`() {
+        val expect = """
+            |$column_a NOT IN (1)
+        """.trimMargin()
+
+        val actual = column_a.NOT_IN(1)
+
+        Assert.assertEquals(expect, actual)
+    }
+
+    @Test
+    fun `when just NOT IN 2 values`() {
+        val expect = """
+            |$column_a NOT IN (1, 2)
+        """.trimMargin()
+
+        val actual = column_a.NOT_IN(1, 2)
+
+        Assert.assertEquals(expect, actual)
+    }
+
+    @Test
+    fun `when just NOT IN subQuery`() {
+        val expect = """
+            |$column_a NOT IN (
+            |                SELECT
+            |                   *
+            |                FROM
+            |                   $first_table
+            |                )
+        """.trimMargin()
+
+        val actual =
+            column_a.NOT_IN(
+                SELECT(ALL).FROM(first_table)
+            )
+
+        Assert.assertEquals(expect, actual)
+    }
 }

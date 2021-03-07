@@ -25,7 +25,8 @@ infix fun String.OR(right: String): String {
     return "($left OR $right)"
 }
 
-fun String.IN(vararg valueArgs: String): String {
+fun String.IN(vararg valueArgs: String, negation: Boolean = false): String {
+    val NOT = if (negation) "NOT " else ""
     var values = valueArgs[0]
     for (i in 1..valueArgs.lastIndex) {
         values =
@@ -33,12 +34,13 @@ fun String.IN(vararg valueArgs: String): String {
             |$values, ${valueArgs[i]}
             """.trimMargin("|")
     }
-    return """$this IN ($values)"""
+    return """$this ${NOT}IN ($values)"""
 }
 
-fun String.IN(subQuery: ISelect): String {
-    val _in = StringBuilder("|$this IN ")
-    val inWithSpaceLength = " IN ".length
+fun String.IN(subQuery: ISelect, negation: Boolean = false): String {
+    val NOT = if (negation) "NOT " else ""
+    val _in = StringBuilder("|$this ${NOT}IN ")
+    val inWithSpaceLength = " ${NOT}IN ".length
     val indent = " ".repeat(this.length + inWithSpaceLength)
     val subQueryLines = subQuery.subQuery().trimMargin().split("\n")
     for (i in subQueryLines.indices) {
@@ -54,7 +56,16 @@ fun String.IN(subQuery: ISelect): String {
 
 fun String.IN(vararg valueArgs: Any): String {
     val strings = valueArgs.map { it.toString() }.toTypedArray()
-    return this.IN(*strings)
+    return IN(*strings, negation = false)
+}
+
+fun String.NOT_IN(subQuery: ISelect): String {
+    return IN(subQuery, negation = true)
+}
+
+fun String.NOT_IN(vararg valueArgs: Any): String {
+    val strings = valueArgs.map { it.toString() }.toTypedArray()
+    return IN(*strings, negation = true)
 }
 
 infix fun String.LIKE(pattern: String): String {
