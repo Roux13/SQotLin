@@ -73,10 +73,8 @@ infix fun String.BETWEEN(low: Any): Between {
     return Between(value = this, low.toString())
 }
 
-infix fun Between.AND(high: Any): String {
-    return """
-        |$value BETWEEN $low AND $high
-    """.trimMargin()
+infix fun String.NOT_BETWEEN(low: Any): Between {
+    return Between(value = this, low.toString(), negation = true)
 }
 
 infix fun String.EQ(right: String): String {

@@ -20,7 +20,7 @@ class BetweenTest {
     }
 
     @Test
-    fun `when SELECT one column FROM one table and WHERE clause`() {
+    fun `when simple BETWEEN`() {
         val expect = """
             |SELECT
             |   $column_a
@@ -37,6 +37,40 @@ class BetweenTest {
                 first_table
             ).WHERE(
                 column_a BETWEEN 0 AND 10
+            ).query()
+
+        Assert.assertEquals(expect, actual)
+    }
+
+    @Test
+    fun `when just NOT BETWEEN`() {
+        val expect = """
+            |$column_a NOT BETWEEN 0 AND 10
+        """.trimMargin("|")
+
+        val actual = column_a NOT_BETWEEN 0 AND 10
+
+        Assert.assertEquals(expect, actual)
+    }
+
+    @Test
+    fun `when simple NOT BETWEEN`() {
+        val expect = """
+            |SELECT
+            |   $column_a
+            |FROM
+            |   $first_table
+            |WHERE
+            |   $column_a NOT BETWEEN 0 AND 10
+        """.trimMargin("|")
+
+        val actual =
+            SELECT(
+                column_a
+            ).FROM(
+                first_table
+            ).WHERE(
+                column_a NOT_BETWEEN 0 AND 10
             ).query()
 
         Assert.assertEquals(expect, actual)
