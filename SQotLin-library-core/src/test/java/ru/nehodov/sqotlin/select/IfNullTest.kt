@@ -3,14 +3,14 @@ package ru.nehodov.sqotlin.select
 import org.junit.Assert
 import org.junit.Test
 import ru.nehodov.sqotlin.SQLiteConst.EMPTY
+import ru.nehodov.sqotlin.TestDbSchemaConst.alias_a
+import ru.nehodov.sqotlin.TestDbSchemaConst.column_a
 import ru.nehodov.sqotlin.aggregateFunctions.SUM
 import ru.nehodov.sqotlin.extensions.AS
 import ru.nehodov.sqotlin.extensions.AS_IS
 import ru.nehodov.sqotlin.extensions.EQ
 
-class IFNULL_Test {
-    private val column_a = "column_a"
-    private val alias_a = "alias_a"
+class IfNullTest {
 
     @Test
     fun `when IFNULL as is & default is empty varchar`(){

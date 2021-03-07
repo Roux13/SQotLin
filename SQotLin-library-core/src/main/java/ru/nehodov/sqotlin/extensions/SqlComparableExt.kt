@@ -26,5 +26,46 @@ infix fun SqlComparable.EQ(right: String): String {
 
 infix fun SqlComparable.NEQ(right: String): String {
     return "$this != $right"
+}
 
+infix fun SqlComparable.LESS(right: String): String {
+    val operator = "<"
+    return comparableComparisonOperation(this.toString(), operator, right)
+}
+
+infix fun SqlComparable.LESS(right: Any): String {
+    return this.LESS(right.toString())
+}
+
+infix fun SqlComparable.GREAT(right: String): String {
+    val operator = ">"
+    return comparableComparisonOperation(this.toString(), operator, right)
+}
+
+infix fun SqlComparable.GREAT(right: Any): String {
+    return this.GREAT(right.toString())
+}
+
+infix fun SqlComparable.LESSorEQ(right: String): String {
+    val operator = "<="
+    return comparableComparisonOperation(this.toString(), operator, right)
+}
+
+infix fun SqlComparable.LESSorEQ(right: Any): String {
+    return this.LESSorEQ(right.toString())
+}
+
+infix fun SqlComparable.GREATorEQ(right: String): String {
+    val operator = ">="
+    return comparableComparisonOperation(this.toString(), operator, right)
+}
+
+infix fun SqlComparable.GREATorEQ(right: Any): String {
+    return this.GREATorEQ(right.toString())
+}
+
+private fun comparableComparisonOperation(left: String, operator: String, right: String): String {
+    return """
+       |$left $operator $right
+    """.trimMargin("|")
 }

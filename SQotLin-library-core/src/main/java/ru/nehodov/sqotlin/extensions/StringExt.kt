@@ -7,15 +7,12 @@ infix fun String.AS(alias: String): String {
         """.trimMargin("|")
 }
 
-//infix fun String.AS(table: Aliasable): String {
-//    return """
-//        |$this ${table.alias}
-//        """.trimMargin("|")
-//}
-
 infix fun String.AND(right: String): String {
     val left = this
-    return "$left AND $right"
+    return """
+       |$left
+       |   AND $right
+    """.trimMargin()
 }
 
 infix fun String.OR(right: String): String {

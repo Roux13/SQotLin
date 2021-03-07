@@ -8,6 +8,8 @@ object TestDbSchemaConst {
     const val column_a = "column_a"
     const val column_b = "column_b"
     const val column_c = "column_c"
+    const val column_d = "column_d"
+    const val column_e = "column_e"
     const val first_table_alias = "first_table_alias"
     const val second_table_alias = "second_table_alias"
     const val third_table_alias = "third_table_alias"

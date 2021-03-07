@@ -13,7 +13,7 @@ import ru.nehodov.sqotlin.extensions.ASC
 import ru.nehodov.sqotlin.extensions.AS_IS
 import ru.nehodov.sqotlin.extensions.DESC
 
-class SELECT_Test {
+class SelectTest {
 
     @Test
     fun `when SELECT expression`() {
