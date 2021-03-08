@@ -1,5 +1,5 @@
-//package ru.nehodov.sqotlin
-//
+package ru.nehodov.sqotlin
+
 //import android.content.Context
 //import android.database.sqlite.SQLiteDatabase
 //import androidx.test.core.app.ApplicationProvider
@@ -44,7 +44,7 @@
 //    @Test
 //    fun `when`() {
 //        db.execSQL(
-//            SELECT(SQLiteConst.ALL).FROM(table_name).sql()
+//            SELECT(SQLiteConst.ALL).FROM(table_name).query()
 //        )
 //
 //        db.execSQL(
@@ -54,12 +54,12 @@
 //                COALESCE(column_a, column_b, default = 0) AS alias_b,
 //                "1" AS alias_a
 //            ).FROM(
-//                SELECT(SQLiteConst.ALL).FROM(table_name).sql()
+//                SELECT(SQLiteConst.ALL).FROM(table_name).query()
 //            ).WHERE(column_a EQ 5)
-//                .sql()
+//                .query()
 //        )
 //
-//        val SELECT_ALL_FROM = SELECT(SQLiteConst.ALL).FROM(table_name).sql()
+//        val SELECT_ALL_FROM = SELECT(SQLiteConst.ALL).FROM(table_name).query()
 //
 //        SELECT(
 //            SUM(column_a) AS "sum",
@@ -69,15 +69,19 @@
 //            column_b,
 //            SELECT_ALL_FROM AS "alis3"
 //        ).INNER_JOIN(
-//            table_name ON column_a EQ column_b
-//        ).INNER_JOIN(
-//            table_name ON column_b NEQ column_a
-//        ).LEFT_JOIN(
-//            table_name ON (column_a EQ column_b)
+//            table_name
+//        ).ON(
+//            column_a EQ column_b
+//        ).INNER_JOIN(table_name).ON(
+//            column_b NEQ column_a
+//        ).LEFT_JOIN(table_name).ON(
+//            column_a EQ column_b
 //        ).CROSS_JOIN(
-//            SELECT(SQLiteConst.ALL).FROM(table_name).sql() AS alias_b
+//            SELECT(SQLiteConst.ALL).FROM(table_name).query() AS alias_b
+//        ).ON(
+//            column_a EQ column_b
 //        ).WHERE(table_name EQ 1)
-//            .sql()
+//            .query()
 //
 //
 //        SELECT(
@@ -89,15 +93,17 @@
 //            SELECT(SQLiteConst.ALL).FROM(table_name)
 //                    UNION_ALL
 //                    SELECT(column_a).FROM(table_name)
-//        ).INNER_JOIN(
-//            table_name ON column_a EQ column_b
-//        ).INNER_JOIN(
-//            table_name ON column_b NEQ column_a
-//        ).LEFT_JOIN(
-//            table_name ON (column_a EQ column_b)
+//        ).INNER_JOIN(table_name).ON(
+//            column_a EQ column_b
+//        ).INNER_JOIN(table_name).ON(
+//            column_b NEQ column_a
+//        ).LEFT_JOIN(table_name).ON(
+//            column_a EQ column_b
 //        ).CROSS_JOIN(
-//            SELECT(SQLiteConst.ALL).FROM(table_name).sql() AS alias_b
-//        ).WHERE(table_name EQ 1)
-//            .sql()
+//            SELECT(SQLiteConst.ALL).FROM(table_name) AS alias_b
+//        ).ON(
+//            column_a NEQ column_b
+//        ).WHERE(table_name EQ 1
+//        ).query()
 //    }
 //}
