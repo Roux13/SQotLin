@@ -70,7 +70,7 @@ fun String.NOT_IN(vararg valueArgs: Any): String {
 
 infix fun String.LIKE(pattern: String): String {
     return """
-        |LIKE '$pattern'
+        |$this LIKE '${pattern.trim('\'')}'
     """.trimMargin()
 }
 
