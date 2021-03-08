@@ -2,7 +2,7 @@ package ru.nehodov.sqotlin.select
 
 class SelectQuery(private val isDistinct: Boolean) {
 
-    private var columns: String? = ""
+    private var columns: String = ""
     private var from: String? = null
     private var joins: MutableList<JoinContainer>? = null
     private var where: String? = null
@@ -33,7 +33,7 @@ class SelectQuery(private val isDistinct: Boolean) {
 
     private fun build(): StringBuilder {
         val query = StringBuilder()
-        columns?.let { query.append("$columns") }
+        columns.let { query.append(columns) }
         from?.let { query.append("$from") }
         joins?.let { query.append(appendJoins()) }
         where?.let { query.append("$where") }
