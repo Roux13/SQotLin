@@ -20,19 +20,15 @@ class UnionTest {
             |SELECT
             |   *
             |FROM
-            |   (
             |   SELECT
             |      $column_a
             |   FROM
             |      $first_table
-            |   )
             |   UNION
-            |   (
             |   SELECT
             |      $column_b
             |   FROM
             |      $second_table
-            |   )
         """.trimMargin()
 
         val subQuery1 =
@@ -64,26 +60,20 @@ class UnionTest {
             |SELECT
             |   *
             |FROM
-            |   (
             |   SELECT
             |      $column_a
             |   FROM
             |      $first_table
-            |   )
             |   UNION
-            |   (
             |   SELECT
             |      $column_b
             |   FROM
             |      $second_table
-            |   )
             |   UNION
-            |   (
             |   SELECT
             |      $column_c
             |   FROM
             |      $third_table
-            |   )
         """.trimMargin()
 
         val subQuery1 =
@@ -121,19 +111,15 @@ class UnionTest {
             |SELECT
             |   *
             |FROM
-            |   (
             |   SELECT
             |      $column_a
             |   FROM
             |      $first_table
-            |   )
             |   UNION ALL
-            |   (
             |   SELECT
             |      $column_b
             |   FROM
             |      $second_table
-            |   )
         """.trimMargin()
 
         val subQuery1 =
@@ -165,26 +151,20 @@ class UnionTest {
             |SELECT
             |   *
             |FROM
-            |   (
             |   SELECT
             |      $column_a
             |   FROM
             |      $first_table
-            |   )
             |   UNION ALL
-            |   (
             |   SELECT
             |      $column_b
             |   FROM
             |      $second_table
-            |   )
             |   UNION ALL
-            |   (
             |   SELECT
             |      $column_c
             |   FROM
             |      $third_table
-            |   )
         """.trimMargin()
 
         val subQuery1 =
