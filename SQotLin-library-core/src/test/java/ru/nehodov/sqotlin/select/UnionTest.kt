@@ -20,6 +20,7 @@ class UnionTest {
             |SELECT
             |   *
             |FROM
+            |   (
             |   SELECT
             |      $column_a
             |   FROM
@@ -29,6 +30,7 @@ class UnionTest {
             |      $column_b
             |   FROM
             |      $second_table
+            |   )
         """.trimMargin()
 
         val subQuery1 =
@@ -60,6 +62,7 @@ class UnionTest {
             |SELECT
             |   *
             |FROM
+            |   (
             |   SELECT
             |      $column_a
             |   FROM
@@ -74,6 +77,7 @@ class UnionTest {
             |      $column_c
             |   FROM
             |      $third_table
+            |   )
         """.trimMargin()
 
         val subQuery1 =
@@ -111,6 +115,7 @@ class UnionTest {
             |SELECT
             |   *
             |FROM
+            |   (
             |   SELECT
             |      $column_a
             |   FROM
@@ -120,6 +125,7 @@ class UnionTest {
             |      $column_b
             |   FROM
             |      $second_table
+            |   )
         """.trimMargin()
 
         val subQuery1 =
@@ -151,6 +157,7 @@ class UnionTest {
             |SELECT
             |   *
             |FROM
+            |   (
             |   SELECT
             |      $column_a
             |   FROM
@@ -165,6 +172,7 @@ class UnionTest {
             |      $column_c
             |   FROM
             |      $third_table
+            |   )
         """.trimMargin()
 
         val subQuery1 =

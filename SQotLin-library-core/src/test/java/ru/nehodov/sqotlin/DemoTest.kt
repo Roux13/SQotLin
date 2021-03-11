@@ -79,9 +79,9 @@ class DemoTest {
         ).FROM(
             column_a AS "a",
             column_b,
-            SELECT(ALL).FROM(table_name)
+            (SELECT(ALL).FROM(table_name)
                     UNION_ALL
-                    SELECT(column_a).FROM(table_name)
+                    SELECT(column_a).FROM(table_name)).subQuery()
         ).INNER_JOIN(table_name).ON(
             column_a EQ column_b
         ).INNER_JOIN(table_name).ON(

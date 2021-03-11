@@ -1,67 +1,68 @@
 package ru.nehodov.sqotlin.extensions
 
 import ru.nehodov.sqotlin.select.ISelect
+import ru.nehodov.sqotlin.select.Union
 
-infix fun ISelect.UNION_ALL(other: ISelect): String {
-    return """
+infix fun ISelect.UNION_ALL(other: ISelect): Union {
+    return Union("""
         |${this.query()}
         |UNION ALL
         |${other.query()}
-    """.trimMargin()
+    """)
 }
 
-infix fun String.UNION_ALL(other: ISelect): String {
-    return """
+infix fun String.UNION_ALL(other: ISelect): Union {
+    return Union("""
         |${this}
         |UNION ALL
         |${other.query()}
-    """.trimMargin()
+    """)
 }
 
-infix fun ISelect.UNION(other: ISelect): String {
-    return """
+infix fun ISelect.UNION(other: ISelect): Union {
+    return Union("""
         |${this.query()}
         |UNION
         |${other.query()}
-    """.trimMargin()
+    """)
 }
 
-infix fun String.UNION(other: ISelect): String {
-    return """
+infix fun String.UNION(other: ISelect): Union {
+    return Union("""
         |${this}
         |UNION
         |${other.query()}
-    """.trimMargin()
+    """)
 }
 
-infix fun ISelect.UNION_ALL(other: String): String {
-    return """
+infix fun ISelect.UNION_ALL(other: String): Union {
+    return Union("""
         |${this.query()}
         |UNION ALL
         |$other
-    """.trimMargin()
+    """)
 }
 
-infix fun String.UNION_ALL(other: String): String {
-    return """
+infix fun String.UNION_ALL(other: String): Union {
+    return Union("""
         |$this
         |UNION ALL
         |$other
-    """.trimMargin()
+    """)
 }
 
-infix fun ISelect.UNION(other: String): String {
-    return """
+infix fun ISelect.UNION(other: String): Union {
+    return Union("""
         |${this.query()}
         |UNION
         |$other
-    """.trimMargin()
+    """)
 }
 
-infix fun String.UNION(other: String): String {
-    return """
+infix fun String.UNION(other: String): Union {
+    return Union("""
         |$this
         |UNION
         |$other
-    """.trimMargin()
+    """)
 }
