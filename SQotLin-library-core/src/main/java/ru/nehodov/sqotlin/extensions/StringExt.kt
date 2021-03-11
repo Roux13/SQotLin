@@ -20,7 +20,20 @@ infix fun String.AND(right: String): String {
     """.trimMargin()
 }
 
+infix fun Any.AND(right: Any): String {
+    val left = this.toString()
+    return """
+       |$left
+       |   AND $right
+    """.trimMargin()
+}
+
 infix fun String.OR(right: String): String {
+    val left = this
+    return "($left OR $right)"
+}
+
+infix fun Any.OR(right: Any): String {
     val left = this
     return "($left OR $right)"
 }
@@ -111,8 +124,8 @@ infix fun String.EQ(right: String): String {
     return comparisonOperation(this, operator, right)
 }
 
-infix fun String.EQ(right: Any): String {
-    return this.EQ(right.toString())
+infix fun Any.EQ(right: Any): String {
+    return this.toString().EQ(right.toString())
 }
 
 infix fun String.NEQ(right: String): String {
@@ -120,8 +133,8 @@ infix fun String.NEQ(right: String): String {
     return comparisonOperation(this, operator, right)
 }
 
-infix fun String.NEQ(right: Any): String {
-    return this.NEQ(right.toString())
+infix fun Any.NEQ(right: Any): String {
+    return this.toString().NEQ(right.toString())
 }
 
 infix fun String.LESS(right: String): String {
@@ -129,8 +142,8 @@ infix fun String.LESS(right: String): String {
     return comparisonOperation(this, operator, right)
 }
 
-infix fun String.LESS(right: Any): String {
-    return this.LESS(right.toString())
+infix fun Any.LESS(right: Any): String {
+    return this.toString().LESS(right.toString())
 }
 
 infix fun String.GREATER(right: String): String {
@@ -138,8 +151,8 @@ infix fun String.GREATER(right: String): String {
     return comparisonOperation(this, operator, right)
 }
 
-infix fun String.GREATER(right: Any): String {
-    return this.GREATER(right.toString())
+infix fun Any.GREATER(right: Any): String {
+    return this.toString().GREATER(right.toString())
 }
 
 infix fun String.LESSorEQ(right: String): String {
@@ -147,8 +160,8 @@ infix fun String.LESSorEQ(right: String): String {
     return comparisonOperation(this, operator, right)
 }
 
-infix fun String.LESSorEQ(right: Any): String {
-    return this.LESSorEQ(right.toString())
+infix fun Any.LESSorEQ(right: Any): String {
+    return this.toString().LESSorEQ(right.toString())
 }
 
 infix fun String.GREATorEQ(right: String): String {
@@ -156,8 +169,8 @@ infix fun String.GREATorEQ(right: String): String {
     return comparisonOperation(this, operator, right)
 }
 
-infix fun String.GREATorEQ(right: Any): String {
-    return this.GREATorEQ(right.toString())
+infix fun Any.GREATorEQ(right: Any): String {
+    return this.toString().GREATorEQ(right.toString())
 }
 
 private fun comparisonOperation(left: String, operator: String, right: String): String {

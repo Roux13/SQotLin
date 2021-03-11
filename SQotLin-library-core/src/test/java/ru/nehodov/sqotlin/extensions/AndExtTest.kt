@@ -5,6 +5,7 @@ import org.junit.Test
 import ru.nehodov.sqotlin.TestDbSchemaConst.column_a
 import ru.nehodov.sqotlin.TestDbSchemaConst.column_b
 import ru.nehodov.sqotlin.TestDbSchemaConst.column_c
+import ru.nehodov.sqotlin.select.IFNULL
 
 class AndExtTest {
 
@@ -70,6 +71,18 @@ class AndExtTest {
             ${if(condition) "|   AND $column_c != 0" else ""}""".trimMargin()
 
         val actual = (column_a EQ 0) AND (column_b GREATER 0) AND (if(condition) column_c NEQ 0 else "")
+
+        Assert.assertEquals(expect, actual)
+    }
+
+    @Test
+    fun `when simple AND and one operand is IFNULL`() {
+        val expect = """
+            |IFNULL($column_a, 0) = 0
+            |   AND $column_b > 0
+        """.trimMargin()
+
+        val actual = (IFNULL(column_a, 0) EQ 0) AND (column_b GREATER 0)
 
         Assert.assertEquals(expect, actual)
     }
