@@ -9,6 +9,13 @@ infix fun String.AS(alias: String): String {
         """.trimMargin("|")
 }
 
+infix fun Any.AS(alias: Any): String {
+    val as_alias = if (alias.toString().isNotEmpty()) " AS $alias" else ""
+    return """
+        |$this$as_alias
+        """.trimMargin("|")
+}
+
 infix fun String.AND(right: String): String {
     val left = this
     return if (right.isEmpty()) {
