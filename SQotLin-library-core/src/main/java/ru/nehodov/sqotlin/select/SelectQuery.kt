@@ -2,6 +2,12 @@ package ru.nehodov.sqotlin.select
 
 class SelectQuery(private val isDistinct: Boolean) {
 
+    private var query = StringBuilder(
+        """
+            |$SELECT${if (isDistinct) " $DISTINCT" else ""}
+            """
+    )
+
     private var columns: String = ""
     private var from: String? = null
     private var joins: MutableList<JoinContainer>? = null
@@ -13,27 +19,31 @@ class SelectQuery(private val isDistinct: Boolean) {
     private var offset: String? = null
 
     fun sql(): String {
-        return StringBuilder(
-            """
-            |$SELECT${if (isDistinct) " $DISTINCT" else ""}
-            """
-        ).append(build()).toString().trimMargin().trim()
+//        return StringBuilder(
+//            """
+//            |$SELECT${if (isDistinct) " $DISTINCT" else ""}
+//            """
+        return build().toString().trimMargin().trim()
     }
 
     fun subQuery(): String {
         val closingParenthesis = """
             |)"""
-        return StringBuilder(
-            """(
-            |$SELECT${if (isDistinct) " $DISTINCT" else ""}
-            """
-        ).append(build())
-            .append(closingParenthesis).toString()
+        return build()
+            .insert(0, '(')
+            .append(closingParenthesis)
+            .toString()
+//        return StringBuilder(
+//            """(
+//            |$SELECT${if (isDistinct) " $DISTINCT" else ""}
+//            """
+//        ).append(build())
+//            .append(closingParenthesis).toString()
     }
 
     private fun build(): StringBuilder {
-        val query = StringBuilder()
-        columns.let { query.append(columns) }
+//        val query = StringBuilder()
+//        columns.let { query.append(columns) }
         from?.let { query.append("$from") }
         joins?.let { query.append(appendJoins()) }
         where?.let { query.append("$where") }
@@ -45,21 +55,19 @@ class SelectQuery(private val isDistinct: Boolean) {
         return query
     }
 
-    fun setColumns(vararg columns: String) {
-        val _columns = StringBuilder()
-        columns.forEach { column ->
-            if (column.isNotEmpty()) {
-                val currentColumn = StringBuilder()
-                column.trimMargin()
-                    .split("\n")
-                    .forEach { line ->
-                        currentColumn.append("|   $line\n")
+    fun setColumns(vararg columns: String?) {
+        val _columns =  columns.asSequence().requireNoNulls().filter { column -> column.isNotEmpty() }.toList()
+        _columns.asSequence()
+            .forEachIndexed { index, column ->
+                val columnLines = column.trimMargin().split("\n")
+                columnLines.asSequence()
+                    .forEachIndexed { index, line ->
+                        query.append("|   $line${if (index < columnLines.lastIndex) "\n" else ""}")
                     }
-                _columns.append(currentColumn.trimEnd()).append(",\n")
+                if (_columns.indexOf(column) < _columns.lastIndex) {
+                    query.append(",\n")
+                }
             }
-
-        }
-        this.columns = _columns.toString().trimEnd().trimEnd(',').trimEnd()
     }
 
     fun setTables(vararg tables: String) {
